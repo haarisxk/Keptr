@@ -1,0 +1,70 @@
+[package]
+name = "keptr"
+version = "0.3.0"
+description = "High-performance secure vault application"
+authors = ["Keptr Team"]
+edition = "2021"
+rust-version = "1.77"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] }
+# Crypto
+argon2 = { version = "0.5", features = ["std", "zeroize"] }
+chacha20poly1305 = "0.10"
+aes-gcm = "0.10.3"
+sha2 = "0.10"
+hkdf = "0.12"
+hmac = "0.12"
+ed25519-dalek = { version = "2.2", features = ["zeroize", "rand_core"] }
+x25519-dalek = { version = "2.0", features = ["static_secrets", "reusable_secrets", "serde", "zeroize"] }
+ml-kem = "0.2"
+getrandom = { version = "0.2", features = ["js"] }
+zeroize = { version = "1.8", features = ["derive", "alloc"] }
+rand = "0.8"
+secrecy = { version = "0.8", features = ["serde", "alloc"] }
+# Storage
+rusqlite = { version = "0.31", features = ["bundled", "time", "uuid"] }
+uuid = { version = "1.8", features = ["v4", "fast-rng", "serde"] }
+# Hardware Keys
+ctap-hid-fido2 = "3"
+hex = "0.4"
+# OAuth & Networking
+reqwest = { version = "0.12", features = ["json", "blocking"] }
+postgrest = "1.6"
+tiny_http = "0.12"
+url = "2.5"
+base64 = "0.22"
+dotenvy = "0.15"
+# File handling
+zip = { version = "0.6", features = ["deflate", "time"] }
+chrono = { version = "0.4", features = ["serde"] }
+tauri-plugin-dialog = "2.0.0-rc.8"
+windows = { version = "0.61.3", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_System_Diagnostics_Debug"] }
+enigo = "0.3.0"
+tauri-plugin-global-shortcut = "2.0.0-rc.2"
+
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort" # Strip panic info from binary
+codegen-units = 16 # Compile faster
+lto = false # Disable Link Time Optimization for speed
+opt-level = "z" # Optimize for size
+strip = true # Strip symbols
+
+[profile.dev]
+incremental = true
+opt-level = 0
+debug = 0  # Reduce debug info for faster linking
+split-debuginfo = "unpacked"  # Faster linking on Windows
+

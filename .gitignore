@@ -1,0 +1,29 @@
+# Node/JavaScript
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/Cargo.lock
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+*.log
+
+# Keptr Spec and Audit Docs
+keptr_spec.md
+pending_features.md
+
+# OS Files
+.DS_Store
+Thumbs.db

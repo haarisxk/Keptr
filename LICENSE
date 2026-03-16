@@ -1,0 +1,15 @@
+# Keptr Proprietary License
+
+Copyright (c) 2026 Haaris / Keptr. All rights reserved.
+
+The source code and documentation in this repository are provided for transparency and auditability purposes only. 
+
+By accessing or downloading this repository, you agree to the following terms:
+
+1. **No Modification:** You may not modify, adapt, translate, or create derivative works based upon the software.
+2. **No Redistribution:** You may not host, distribute, copy, or share the repository, its source code, or compiled binaries publicly or privately.
+3. **No Commercial Use:** You may not use this software or any portion of its source code for commercial purposes.
+4. **Personal Audit Only:** You are granted the limited right to download the source code locally solely for the purpose of personal security auditing or compiling the software for your own personal, non-commercial use.
+5. **Branding:** You may not use the "Keptr" name, logos, or brand identity in any associated works or forks.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
