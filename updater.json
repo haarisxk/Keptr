@@ -1,0 +1,11 @@
+{
+    "version": "0.4.0",
+    "notes": "v0.4.0 — Updater ACL fix, cryptographic update signing, and security improvements.",
+    "pub_date": "2026-03-24T04:00:00Z",
+    "platforms": {
+        "windows-x86_64": {
+            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSbXVyTy9yTlJVSnMwWWhpS3MvQVRDNUMyZnJLV2I1dU1FSzRhVzVBaUJqMVp1b3ZFNHJOVWJxUnJJSFR0SmV3ZW8rSThEaU5DaDUxRTYxdkhnWWZrMGZ0Y3pwT3VjTlE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzc0MzA4OTc1CWZpbGU6S2VwdHJfMC40LjBfeDY0LXNldHVwLmV4ZQpQMGpkOFlDVmtmaEFleExCQXdqQ0FaRzZyaGRrTlBIWE10SzVhUzJHQm96eXd0cXNscUQyY01vdnZsamI1SDZ3NktranVSNWNxZDJBS01WdzVicmVEQT09Cg==",
+            "url": "https://github.com/haarisxk/Keptr/releases/download/v0.4.0/Keptr_0.4.0_x64-setup.exe"
+        }
+    }
+}

@@ -1,5 +1,9 @@
 $ErrorActionPreference = "Stop"
-cd "C:\Users\Haaris\Documents\Keptr"
-$env:TAURI_SIGNING_PRIVATE_KEY="dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5OVlINkxFLzhhV0FDK1ROdXVNckgyTVNZamg3T3hrWFJoeXhyb1FkNWorZ0FBQkFBQUFBQUFBQUFBQUlBQUFBQVJMNnhha0s4Qk9tb1dCY0EzMXR2b05XT2k4WU1CZEZSK3phNEpxV01NbjFUYThZamRRN0gvWGY5VXlleU9sb29Ga0dlUWVPYWZtU0tPbFY5NE5NRnR4cUd3TFV0VHZvVEJDUGRySjhEVU1nZVB2ZGFaZ2FCbW5tdXduWTF3K0M5U1BJYzZhMnRtVUU9Cg=="
-$env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD="SuperSecretUpdaterKey2026!"
+$env:Path = "$env:USERPROFILE\.cargo\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs;" + $env:Path
+$env:TAURI_SIGNING_PRIVATE_KEY = "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5eUZicCtFUkptMlVzbUJabjFzZnI0Y2kvazltcVowSzh0SVg0K0RES1dTOEFBQkFBQUFBQUFBQUFBQUlBQUFBQXBOc2d4Q0hYdXUraXNKT3cvb2psNmpxTHhPbEZuanBQK2pVL29aMGtzekZpSVdSVGlnTlczQmNlSDViZDA5RW1QdWVKZnkzNm1aZFEzT0dSM3I0UHpvVTFxRHFIc05ad1dSWG1CalZVQUZMUUxTUGhsek8wL3FhSGRzaHQ3MUU1WGJPR2wzR1lvVjA9Cg=="
+$env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD = "keptr2026"
+Write-Host "=== Environment Ready ==="
+Write-Host "Node: $(node --version)"
+Write-Host "Cargo: $(cargo --version)"
+Write-Host "=== Starting Tauri Build ==="
 npm run tauri build

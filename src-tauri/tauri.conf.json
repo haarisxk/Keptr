@@ -31,6 +31,7 @@
     "bundle": {
         "active": true,
         "targets": "all",
+        "createUpdaterArtifacts": true,
         "icon": [
             "icons/32x32.png",
             "icons/128x128.png",
@@ -46,7 +47,7 @@
     },
     "plugins": {
         "updater": {
-            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDgyQkE5MzVDNTlGMTkwMTgKUldRWWtQRlpYSk82Z3NYNTF1YnVybjZTZ0pEdDlXY3FRSFlOWkl2S0JiUjBkS1lqNGtxQ0RsUGoK",
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI2NTRENEFDQkZCM0JBNjYKUldSbXVyTy9yTlJVSmorZGlNMmQ3cHNWa1FaUXJwUktsNkpCVGY3ZVdIVHQ4L2FQaHlEZ2dwNksK",
             "endpoints": [
                 "https://github.com/haarisxk/Keptr/releases/latest/download/updater.json"
             ]
