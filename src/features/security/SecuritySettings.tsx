@@ -22,6 +22,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import { UpdaterSettings } from "./UpdaterSettings";
 
 export function SecuritySettings() {
     const { toast } = useToast();
@@ -519,6 +520,10 @@ export function SecuritySettings() {
                         )}
                     </div>
                 </div>
+
+                {/* Updater Section */}
+                <UpdaterSettings />
+
                 {/* Danger Zone Section */}
                 <div className="rounded-xl border border-destructive/50 bg-destructive/5 text-destructive-foreground shadow-sm">
                     <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">

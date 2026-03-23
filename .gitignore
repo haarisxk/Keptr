@@ -27,3 +27,6 @@ pending_features.md
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Updater Secrets
+.env.updater

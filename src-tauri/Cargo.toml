@@ -1,6 +1,6 @@
 [package]
 name = "keptr"
-version = "0.3.0"
+version = "0.4.0"
 description = "High-performance secure vault application"
 authors = ["Keptr Team"]
 edition = "2021"
@@ -49,6 +49,8 @@ tauri-plugin-dialog = "2.0.0-rc.8"
 windows = { version = "0.61.3", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_System_Diagnostics_Debug"] }
 enigo = "0.3.0"
 tauri-plugin-global-shortcut = "2.0.0-rc.2"
+tauri-plugin-updater = "2.0.0-rc.4"
+tauri-plugin-process = "2.0.0-rc.1"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

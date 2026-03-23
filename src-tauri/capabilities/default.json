@@ -20,6 +20,8 @@
         "core:window:allow-set-focus",
         "core:webview:default",
         "dialog:default",
-        "global-shortcut:default"
+        "global-shortcut:default",
+        "updater:default",
+        "process:default"
     ]
 }
