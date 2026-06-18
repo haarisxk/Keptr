@@ -26,11 +26,24 @@ jobs:
       - name: Build desktop application
         run: npx tauri build
 
-      - name: Upload artifacts
+      - name: Locate build output
+        run: |
+          echo "=== Release directory ==="
+          dir src-tauri\target\release\*.exe
+          echo "=== Bundle directory ==="
+          dir src-tauri\target\release\bundle\ /s /b
+        shell: cmd
+
+      - name: Upload portable executable
         uses: actions/upload-artifact@v4
         with:
           name: Keptr-Windows
-          path: |
-            src-tauri/target/release/bundle/msi/*.msi
-            src-tauri/target/release/keptr.exe
+          path: src-tauri/target/release/*.exe
+          if-no-files-found: warn
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: Keptr-Installer
+          path: src-tauri/target/release/bundle/**/*
           if-no-files-found: warn
