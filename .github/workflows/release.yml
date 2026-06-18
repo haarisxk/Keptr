@@ -27,23 +27,22 @@ jobs:
         run: npx tauri build
 
       - name: Locate build output
+        if: always()
+        shell: pwsh
         run: |
-          echo "=== Release directory ==="
-          dir src-tauri\target\release\*.exe
-          echo "=== Bundle directory ==="
-          dir src-tauri\target\release\bundle\ /s /b
-        shell: cmd
+          Write-Host "Searching for executables and installers..."
+          Get-ChildItem -Path . -Recurse -Include *.exe,*.msi -ErrorAction SilentlyContinue | Where-Object { $_.FullName -match 'release' } | ForEach-Object { Write-Host $_.FullName }
 
       - name: Upload portable executable
         uses: actions/upload-artifact@v4
         with:
-          name: Keptr-Windows
-          path: src-tauri/target/release/*.exe
+          name: Keptr-Portable
+          path: target/release/keptr.exe
           if-no-files-found: warn
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
           name: Keptr-Installer
-          path: src-tauri/target/release/bundle/**/*
+          path: target/release/bundle/**/*
           if-no-files-found: warn
