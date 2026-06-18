@@ -1,7 +1,8 @@
 use argon2::{
-    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
+    password_hash::{PasswordHasher, SaltString},
     Argon2, Params,
 };
+use rand::rngs::OsRng;
 use crate::memory::SecretBytes;
 
 /// Derives a cryptographic key from a master password using Argon2id.
