@@ -26,6 +26,14 @@ impl SecureStore {
             (),
         )?;
 
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS metadata (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            )",
+            (),
+        )?;
+
         Ok(Self { conn })
     }
 
@@ -36,5 +44,25 @@ impl SecureStore {
             (item_id, item_type, item.to_bytes()),
         )?;
         Ok(())
+    }
+
+    /// Set a metadata key-value pair.
+    pub fn set_metadata(&self, key: &str, value: &str) -> Result<()> {
+        self.conn.execute(
+            "INSERT OR REPLACE INTO metadata (key, value) VALUES (?1, ?2)",
+            (key, value),
+        )?;
+        Ok(())
+    }
+
+    /// Get a metadata value by key.
+    pub fn get_metadata(&self, key: &str) -> Result<Option<String>> {
+        let mut stmt = self.conn.prepare("SELECT value FROM metadata WHERE key = ?1")?;
+        let mut rows = stmt.query([key])?;
+        if let Some(row) = rows.next()? {
+            Ok(Some(row.get(0)?))
+        } else {
+            Ok(None)
+        }
     }
 }
