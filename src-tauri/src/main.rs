@@ -21,7 +21,7 @@ fn initialize_vault(password: String, state: State<'_, AppState>) -> Result<(), 
     let (key, salt) = derive_master_key(&SecretBytes::new(password.into_bytes()), None)?;
     
     // 2. Compute a MAC over a known constant to use for password verification later
-    let verification_mac = compute_hmac(b"KEPTR_VERIFICATION", &key).map_err(|e| e.to_string())?;
+    let verification_mac = compute_hmac(&key, b"KEPTR_VERIFICATION").map_err(|e| e.to_string())?;
     let mac_hex = hex::encode(verification_mac);
     
     // 3. Save to database
@@ -48,7 +48,7 @@ fn unlock_vault(password: String, state: State<'_, AppState>) -> Result<(), Stri
     let (key, _) = derive_master_key(&SecretBytes::new(password.into_bytes()), Some(&salt))?;
     
     // Verify password
-    verify_hmac(b"KEPTR_VERIFICATION", &expected_mac, &key).map_err(|_| "Incorrect master password".to_string())?;
+    verify_hmac(&key, b"KEPTR_VERIFICATION", &expected_mac).map_err(|_| "Incorrect master password".to_string())?;
     
     // Store in memory
     let mut vault_key = state.vault_key.lock().unwrap();
