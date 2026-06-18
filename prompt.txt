@@ -1,0 +1,5429 @@
+# KEPTR MASTER PROMPT
+
+## PART 1 — PROJECT CONSTITUTION, PRODUCT VISION, ENGINEERING PRINCIPLES, DEVELOPMENT GOVERNANCE & AI OPERATING DIRECTIVE
+
+---
+
+# 0. AUTHORITATIVE DIRECTIVE
+
+This document is the authoritative governing specification for the development of **Keptr**.
+
+All requirements contained within this specification are mandatory unless explicitly superseded by a newer approved version of this document.
+
+No requirement may be ignored, weakened, bypassed, postponed, replaced, or reinterpreted for convenience.
+
+No shortcuts are permitted.
+
+No temporary implementations are permitted.
+
+No placeholder implementations are permitted.
+
+No fake functionality is permitted.
+
+No security compromises are permitted.
+
+No "good enough" solutions are permitted.
+
+Every implementation must satisfy production-grade standards before being considered complete.
+
+Keptr must be developed as a real-world commercial software product intended for long-term use by security-conscious individuals, professionals, teams, and organizations.
+
+The objective is not merely to create a password manager.
+
+The objective is to create a modern, highly secure, privacy-first digital vault platform that can compete with leading password managers and secure vault products while maintaining strong security, high performance, long-term maintainability, and user trust.
+
+---
+
+# 1. PROJECT IDENTITY
+
+| Property           | Value                           |
+| ------------------ | ------------------------------- |
+| Product Name       | Keptr                           |
+| Tagline            | Your Digital Life, Kept Secure. |
+| Product Category   | Secure Vault & Password Manager |
+| Primary Platform   | Windows Desktop                 |
+| Companion Platform | Browser Extension               |
+| Future Platforms   | macOS, Linux, iOS, Android      |
+| Architecture Model | Offline-First + Cloud-Enabled   |
+| Security Model     | Zero-Knowledge                  |
+| Encryption Model   | End-to-End Encryption           |
+| License Model      | Source Available                |
+| Rights             | All Rights Reserved             |
+
+---
+
+# 2. PRODUCT VISION
+
+Keptr is a security-focused digital vault built to securely store, organize, protect, synchronize, and recover highly sensitive user data.
+
+The product must be designed with the assumption that user data may include:
+
+* Passwords
+* Usernames
+* Email credentials
+* Authentication secrets
+* TOTP secrets
+* Recovery codes
+* Passkeys
+* Identity information
+* Payment information
+* Secure notes
+* Sensitive documents
+* Personal records
+* Software licenses
+* API credentials
+* SSH credentials
+* Attachments
+* Encrypted files
+* Future secure record types
+
+The architecture must support future expansion without requiring major redesigns.
+
+The software must remain secure, maintainable, and performant for many years.
+
+---
+
+# 3. CORE PRODUCT OBJECTIVES
+
+Keptr must be:
+
+### Secure
+
+Security is the primary objective.
+
+Every architectural decision must prioritize security first.
+
+---
+
+### Private
+
+Users retain ownership and control over their data.
+
+The system must be designed to prevent unnecessary exposure of user information.
+
+---
+
+### Fast
+
+The application should feel immediate and responsive.
+
+Operations should execute with minimal latency.
+
+---
+
+### Reliable
+
+The product must behave consistently and predictably.
+
+Unexpected behavior is unacceptable.
+
+---
+
+### Maintainable
+
+The architecture must remain understandable, auditable, and sustainable.
+
+Future contributors should be able to safely understand and evolve the system.
+
+---
+
+### Future-Proof
+
+Architecture decisions must consider future platforms, future hardware, future security requirements, and future product expansion.
+
+---
+
+# 4. DEVELOPMENT PHILOSOPHY
+
+## Security Before Features
+
+Security takes priority over:
+
+* Convenience
+* Development speed
+* Feature count
+* Visual enhancements
+* Release schedules
+
+If a feature cannot be implemented securely, it must not be implemented.
+
+---
+
+## Production Quality Only
+
+Every implemented feature must be:
+
+* Complete
+* Secure
+* Documented
+* Reviewed
+* Error handled
+* Maintainable
+* Future-proof
+
+Nothing may be added merely to "make it work."
+
+---
+
+## No Technical Debt By Default
+
+Avoid creating debt that must be paid later.
+
+Implement correct solutions from the beginning whenever reasonably possible.
+
+---
+
+## Longevity Over Trends
+
+Prefer stable and proven engineering practices over temporary trends.
+
+Avoid architectures that may require major rewrites later.
+
+---
+
+## Clarity Over Cleverness
+
+Readable, auditable, understandable code is preferred over clever but difficult-to-maintain solutions.
+
+---
+
+# 5. SECURITY-FIRST PRINCIPLES
+
+The following principles govern all development:
+
+### Principle 1
+
+User secrets are the most important asset.
+
+---
+
+### Principle 2
+
+The application must assume hostile environments.
+
+---
+
+### Principle 3
+
+Trust nothing without validation.
+
+---
+
+### Principle 4
+
+Minimize attack surface whenever possible.
+
+---
+
+### Principle 5
+
+Reduce privilege whenever possible.
+
+---
+
+### Principle 6
+
+Fail securely.
+
+---
+
+### Principle 7
+
+Prefer secure defaults.
+
+---
+
+### Principle 8
+
+Protect user data even when users make mistakes.
+
+---
+
+### Principle 9
+
+Assume future threats will be stronger than today's threats.
+
+---
+
+### Principle 10
+
+Design for resilience, not optimism.
+
+---
+
+# 6. PERFORMANCE PRINCIPLES
+
+Keptr must be engineered for performance.
+
+Requirements include:
+
+* Fast startup
+* Fast vault unlock
+* Fast search
+* Fast encryption operations
+* Fast synchronization
+* Low memory usage
+* Predictable resource usage
+* Low CPU overhead
+
+Every abstraction must justify its cost.
+
+Avoid unnecessary layers.
+
+Avoid unnecessary allocations.
+
+Avoid unnecessary complexity.
+
+---
+
+# 7. OFFLINE-FIRST + CLOUD-ENABLED PHILOSOPHY
+
+Keptr is not cloud-dependent.
+
+Keptr is also not cloud-optional in a competitive sense.
+
+The correct architecture is:
+
+### Offline-First
+
+Users must retain access to their vaults without internet connectivity.
+
+Core functionality must operate offline.
+
+---
+
+### Cloud-Enabled
+
+Keptr must implement a secure cloud synchronization architecture.
+
+Cloud functionality is a first-class product capability.
+
+Cloud support is required for:
+
+* Multi-device synchronization
+* Device recovery
+* Vault restoration
+* Backup recovery
+* Data persistence
+* Account continuity
+
+---
+
+### Zero-Knowledge Cloud
+
+The cloud system must never possess:
+
+* Plaintext data
+* Master passwords
+* Recovery secrets
+* Encryption keys
+
+The cloud stores encrypted data only.
+
+---
+
+# 8. USER TRUST PRINCIPLES
+
+Keptr must never include:
+
+* Hidden telemetry
+* Undisclosed analytics
+* Forced updates
+* Dark patterns
+* Manipulative UX
+* Misleading prompts
+* Hidden data collection
+
+Users must understand:
+
+* What is stored
+* What is transmitted
+* What is encrypted
+* What is synchronized
+* What is deleted
+
+Transparency is mandatory.
+
+---
+
+# 9. AI DEVELOPMENT OPERATING RULES
+
+When acting as the development agent for Keptr:
+
+You are expected to behave as:
+
+* Security Architect
+* Lead Engineer
+* Software Architect
+* Product Engineer
+* UX Engineer
+* Technical Writer
+* QA Reviewer
+
+simultaneously.
+
+---
+
+## Mandatory Behavior
+
+Always:
+
+* Think before implementing.
+* Review architecture before coding.
+* Consider security implications.
+* Consider future scalability.
+* Consider maintainability.
+* Consider auditability.
+
+---
+
+## Prohibited Behavior
+
+Never:
+
+* Write lazy code.
+* Use temporary fixes.
+* Introduce placeholder implementations.
+* Ignore security warnings.
+* Leave critical TODOs.
+* Leave incomplete implementations.
+* Introduce unnecessary dependencies.
+
+---
+
+## Code Generation Rules
+
+Every line of code must:
+
+* Serve a purpose.
+* Be typed where applicable.
+* Be validated.
+* Be documented when necessary.
+* Be production ready.
+
+---
+
+# 10. PROJECT GOVERNANCE
+
+Maintain a clean repository at all times.
+
+Repository quality is a product requirement.
+
+---
+
+## Prohibited Repository Content
+
+No:
+
+* Empty folders
+* Empty files
+* Temporary files
+* Scratch files
+* Debug artifacts
+* Old backups
+* Dead code
+* Duplicate code
+* Abandoned experiments
+
+---
+
+## Required Repository Standards
+
+Repository must remain:
+
+* Professional
+* Organized
+* Auditable
+* Maintainable
+* Consistent
+
+---
+
+# 11. FILE GOVERNANCE
+
+The following files are protected project assets:
+
+### context.md
+
+Must always exist.
+
+Must remain updated.
+
+---
+
+### prompt.txt
+
+Must always exist.
+
+Must remain updated.
+
+---
+
+Neither file may be deleted.
+
+---
+
+# 12. CONTEXT.MD REQUIREMENTS
+
+context.md acts as project memory.
+
+It must track:
+
+* Current version
+* Completed work
+* Current milestone
+* Pending tasks
+* Known issues
+* Security decisions
+* Architecture decisions
+* Design decisions
+* Future plans
+* Bug fixes
+* Changelog
+
+The file must be updated whenever meaningful work is completed.
+
+---
+
+# 13. VERSION GOVERNANCE
+
+Initial Version:
+
+v0.0.1
+
+Version numbers must remain synchronized across:
+
+* Application
+* Documentation
+* Build metadata
+* Release notes
+* Context documentation
+
+---
+
+## Version Updates
+
+Every meaningful:
+
+* Feature
+* Security improvement
+* Bug fix
+* Refactor
+* Release
+
+must update version information appropriately.
+
+---
+
+# 14. USER EXPERIENCE PHILOSOPHY
+
+All user-facing language must feel:
+
+* Professional
+* Clear
+* Human
+* Concise
+* Trustworthy
+
+Never sound:
+
+* Robotic
+* AI-generated
+* Overly technical
+* Developer-centric
+
+The user interface should communicate like professional software used by real customers.
+
+Example:
+
+Preferred:
+"Settings"
+
+Not:
+"Open Configuration Manager"
+
+---
+
+# 15. BRAND RULES
+
+Official Product Name:
+
+Keptr
+
+Official Tagline:
+
+Your Digital Life, Kept Secure.
+
+No alternate names may be introduced.
+
+No placeholder branding may be introduced.
+
+No AI-generated logo may be used.
+
+A future official logo will be provided and must replace temporary branding assets when available.
+
+---
+
+# 16. COMPLETION STANDARD
+
+No feature is complete until:
+
+* Security reviewed
+* Documentation updated
+* Architecture reviewed
+* Errors handled
+* Quality verified
+* Version updated
+* context.md updated
+
+Only then may development proceed to the next feature.
+
+---
+
+END OF PART 1
+
+# KEPTR MASTER PROMPT
+
+## PART 2 — SECURITY ARCHITECTURE, CRYPTOGRAPHY, MEMORY PROTECTION, AUTHENTICATION, INTEGRITY & PROCESS SECURITY
+
+---
+
+# 17. SECURITY ARCHITECTURE MANDATE
+
+Security is the foundation of Keptr.
+
+Every system, module, service, process, file format, storage layer, synchronization mechanism, user interaction, and architectural decision must be designed under a security-first model.
+
+No component is exempt.
+
+Security must be considered during:
+
+* Design
+* Architecture
+* Implementation
+* Testing
+* Documentation
+* Deployment
+* Updates
+* Maintenance
+
+---
+
+# 18. THREAT MODEL PHILOSOPHY
+
+Keptr must assume that attackers may attempt to compromise:
+
+* User devices
+* Memory
+* Storage
+* Network traffic
+* Cloud infrastructure
+* Browser environments
+* Extensions
+* Update channels
+* Backup files
+* Synchronization services
+
+The system must be designed to remain secure even when individual layers fail.
+
+Defense in depth is mandatory.
+
+No single point of failure should expose the entire vault.
+
+---
+
+# 19. ZERO-KNOWLEDGE ARCHITECTURE
+
+Keptr shall operate under a strict zero-knowledge security model.
+
+---
+
+## Core Rules
+
+All encryption and decryption operations occur exclusively on authorized client devices.
+
+Plaintext data must never be transmitted to any server.
+
+Master passwords must never leave the device.
+
+Raw encryption keys must never leave the device.
+
+Recovery secrets must never leave the device in plaintext form.
+
+Servers must never possess sufficient information to decrypt user data.
+
+---
+
+## Server Visibility Restrictions
+
+Servers may store:
+
+* Encrypted vault data
+* Encrypted metadata where necessary
+* Account identifiers
+* Synchronization metadata
+* Device registration records
+* Encrypted backups
+
+Servers must never store:
+
+* Plaintext vault data
+* Plaintext credentials
+* Plaintext notes
+* Plaintext documents
+* Plaintext attachments
+* Master passwords
+* Encryption keys
+
+---
+
+# 20. END-TO-END ENCRYPTION
+
+All user data must be encrypted before leaving the local device.
+
+Encryption must occur prior to:
+
+* Synchronization
+* Sharing
+* Backup creation
+* Cloud uploads
+
+Decryption must only occur on authorized client devices.
+
+Data must remain encrypted:
+
+* At rest
+* In transit
+* During synchronization
+* During backup storage
+
+---
+
+# 21. CRYPTOGRAPHIC POLICY
+
+All cryptographic implementations must prioritize:
+
+* Security
+* Stability
+* Auditability
+* Long-term support
+* Industry acceptance
+
+Experimental cryptography must not be used for production systems.
+
+All cryptographic operations must rely on mature, reviewed implementations.
+
+---
+
+# 22. APPROVED CRYPTOGRAPHIC PRIMITIVES
+
+The following represent the baseline cryptographic requirements.
+
+If stronger, mature, widely accepted alternatives become available and are determined to provide meaningful benefits without introducing instability, migration paths may be considered.
+
+---
+
+## Symmetric Encryption
+
+Approved:
+
+* XChaCha20-Poly1305
+* AES-256-GCM
+
+Requirements:
+
+* Authenticated encryption
+* Confidentiality
+* Integrity protection
+* Unique nonce usage
+* Secure key management
+
+---
+
+## Key Derivation
+
+Approved:
+
+Argon2id
+
+Requirements:
+
+* Memory-hard configuration
+* High resistance to GPU attacks
+* Tunable security parameters
+* Security-first defaults
+
+Minimum baseline:
+
+* 64 MB memory cost
+* 4–8 iterations minimum
+* Parallelism tuned appropriately
+
+Future versions may increase these parameters as hardware improves.
+
+---
+
+## Digital Signatures
+
+Approved:
+
+Ed25519
+
+Requirements:
+
+* Fast verification
+* Strong security
+* Compact signatures
+* Reliable implementation
+
+---
+
+## Hashing
+
+Approved:
+
+SHA-512
+
+Primary usage:
+
+* Integrity verification
+* HMAC construction
+* Internal security mechanisms
+
+Where both SHA-256 and SHA-512 are viable options, prefer SHA-512 when practical and appropriate.
+
+Avoid weaker or legacy alternatives unless compatibility requirements explicitly justify their use.
+
+---
+
+## Post-Quantum Readiness
+
+Approved:
+
+ML-KEM
+
+Examples:
+
+* Kyber-768
+* Kyber-1024
+
+Requirements:
+
+* Future-proof architecture
+* Hybrid deployment strategies when appropriate
+* Migration planning for future cryptographic evolution
+
+---
+
+# 23. CRYPTOGRAPHIC IMPLEMENTATION RULES
+
+All cryptographic operations must:
+
+* Use secure randomness
+* Use cryptographically secure generators
+* Validate inputs
+* Validate outputs
+* Prevent nonce reuse
+* Prevent key reuse where inappropriate
+* Fail securely
+
+---
+
+## Forbidden Practices
+
+Never:
+
+* Invent custom encryption algorithms
+* Invent custom hash functions
+* Invent custom key derivation schemes
+* Reuse nonces improperly
+* Store plaintext secrets unnecessarily
+* Implement security-critical primitives manually when mature implementations exist
+
+---
+
+# 24. KEY HIERARCHY
+
+Keptr must implement strict key separation.
+
+---
+
+## Hierarchical Structure
+
+Master Key
+
+↓
+
+Vault Encryption Key
+
+↓
+
+Domain-Specific Keys
+
+↓
+
+Per-Item Keys
+
+---
+
+Every layer must maintain cryptographic separation.
+
+Compromise of a lower-level key must not expose higher-level keys.
+
+---
+
+# 25. PER-ITEM ENCRYPTION
+
+Every vault item must be encrypted independently.
+
+Each item must possess:
+
+* Unique cryptographic context
+* Unique derivation parameters
+* Unique identifiers
+* Unique salts
+
+Compromise of one encrypted item must not expose any other item.
+
+---
+
+# 26. SALT STRATEGY
+
+Every encrypted item must receive:
+
+* A unique random salt
+
+Requirements:
+
+* Cryptographically secure generation
+* No reuse
+* Stored alongside encrypted data
+
+---
+
+# 27. PEPPER STRATEGY
+
+Keptr may implement an application-level pepper strategy.
+
+Requirements:
+
+* Separate from vault data
+* Separate from user-controlled secrets
+* Protected against trivial extraction
+* Managed consistently across supported environments
+
+Pepper usage must never weaken portability or recovery guarantees.
+
+---
+
+# 28. KEY ROTATION
+
+Keptr must support secure key rotation.
+
+---
+
+## Automatic Rotation
+
+Support scheduled rotation where appropriate.
+
+---
+
+## Manual Rotation
+
+Users must be able to initiate key rotation.
+
+---
+
+## Rotation Requirements
+
+When keys are rotated:
+
+* Vault data must be re-encrypted securely
+* Integrity must be verified
+* Recovery mechanisms must remain functional
+
+---
+
+# 29. SHAMIR SECRET SHARING
+
+Support threshold-based recovery models.
+
+Requirements:
+
+* Configurable k-of-n threshold schemes
+* Secure generation
+* Secure storage procedures
+* Recovery validation
+
+Recovery shares must never weaken the overall security model.
+
+---
+
+# 30. FORWARD SECRECY
+
+Where sharing functionality is implemented:
+
+* Use ephemeral session keys
+* Minimize long-term key exposure
+* Protect historical data if future keys are compromised
+
+---
+
+# 31. SECURE MEMORY HANDLING
+
+Sensitive information must receive specialized memory handling.
+
+This includes:
+
+* Master passwords
+* Encryption keys
+* Authentication secrets
+* Recovery data
+* Temporary decrypted content
+
+---
+
+## Memory Locking
+
+Use platform-supported memory locking mechanisms where possible.
+
+Examples include:
+
+* mlock
+* VirtualLock
+
+Requirements:
+
+* Prevent paging where feasible
+* Protect sensitive regions
+
+---
+
+## Secure Zeroization
+
+Sensitive memory must be securely wiped immediately after use.
+
+Requirements:
+
+* Deterministic cleanup
+* Resistance to compiler optimization removal
+* Verification where practical
+
+---
+
+## Guard Pages
+
+Sensitive memory regions should utilize guard pages where appropriate.
+
+Goals:
+
+* Detect memory corruption
+* Detect overflows
+* Detect unexpected access
+
+---
+
+# 32. HEAP ISOLATION
+
+Secrets must not be treated like ordinary application data.
+
+Requirements:
+
+* Dedicated secret allocation strategies
+* Isolated memory handling
+* Controlled lifetimes
+* Explicit ownership
+
+---
+
+# 33. IN-MEMORY VAULT PROTECTION
+
+Vault contents should remain encrypted while inactive in memory.
+
+---
+
+## Point-of-Use Decryption
+
+Data should be decrypted only when required.
+
+---
+
+## Immediate Re-Encryption
+
+After usage:
+
+* Re-encrypt sensitive content
+* Minimize plaintext lifetime
+
+---
+
+## Plaintext Lifetime Minimization
+
+Decrypted content must not remain resident longer than necessary.
+
+---
+
+# 34. ANTI-DUMP PROTECTION
+
+Protect against memory dump attacks.
+
+Requirements may include:
+
+* Sensitive memory isolation
+* Memory encryption where appropriate
+* Dump exclusion mechanisms
+* Crash dump protections
+
+---
+
+# 35. CRASH HANDLING SECURITY
+
+Crash events must never expose secrets.
+
+Requirements:
+
+* Secure logging
+* Secret exclusion
+* Safe error reporting
+
+No sensitive information may be written to crash reports.
+
+---
+
+# 36. ANTI-DEBUGGING
+
+Keptr must support debugger detection.
+
+---
+
+## Detection Targets
+
+Examples:
+
+* Startup debugger attachment
+* Runtime debugger attachment
+* Step-through analysis
+
+---
+
+## Response Policies
+
+Configurable options:
+
+* Warn
+* Lock vault
+* Exit application
+
+User control must exist where appropriate.
+
+---
+
+# 37. TAMPER DETECTION
+
+Keptr must detect signs of tampering.
+
+Targets include:
+
+* Binary modifications
+* Runtime patching
+* Hooking attempts
+* Unexpected code changes
+
+---
+
+# 38. PROCESS ISOLATION
+
+Security-sensitive operations should be isolated whenever beneficial.
+
+Examples:
+
+* Cryptographic operations
+* Vault operations
+* Synchronization operations
+
+Goals:
+
+* Reduce attack surface
+* Contain compromise
+* Improve auditability
+
+---
+
+# 39. PROTECTED PROCESS BEHAVIOR
+
+Where operating systems support additional protection mechanisms:
+
+Leverage them when practical.
+
+Goals:
+
+* Reduce unauthorized access
+* Strengthen process security
+* Increase resistance to local attacks
+
+---
+
+# 40. BINARY INTEGRITY VERIFICATION
+
+Keptr must verify its own integrity.
+
+---
+
+## Startup Verification
+
+At startup:
+
+* Validate expected binary integrity
+* Validate critical components
+
+---
+
+## Failure Response
+
+If critical integrity checks fail:
+
+* Refuse execution
+* Notify the user clearly
+
+---
+
+# 41. CODE SIGNING
+
+All production releases must be signed.
+
+Requirements:
+
+* Signature validation
+* Integrity validation
+* Long-term verification support
+
+The project shall maintain its zero-cost tooling philosophy whenever possible.
+
+---
+
+# 42. RUNTIME INTEGRITY VERIFICATION
+
+Integrity verification must not stop at startup.
+
+Periodic validation should monitor:
+
+* Critical code regions
+* Security-sensitive modules
+* Runtime integrity state
+
+---
+
+# 43. FUNCTION POINTER VALIDATION
+
+Critical execution paths should validate:
+
+* Function references
+* Security-sensitive execution targets
+
+to reduce exploitation opportunities.
+
+---
+
+# 44. INSTALLATION INTEGRITY
+
+Installation packages must undergo verification before execution.
+
+Requirements:
+
+* Signature verification
+* Integrity verification
+* Trusted origin validation
+
+---
+
+# 45. UPDATE INTEGRITY
+
+Before applying updates:
+
+Verify:
+
+* Digital signatures
+* Release authenticity
+* Hash integrity
+
+No update may be installed without successful validation.
+
+---
+
+# 46. TRUST CHAIN REQUIREMENTS
+
+The chain of trust must remain verifiable from:
+
+Release Source
+
+↓
+
+Downloaded Artifact
+
+↓
+
+Installer
+
+↓
+
+Application Binary
+
+↓
+
+Runtime Execution
+
+Any trust-chain failure must halt installation or execution.
+
+---
+
+# 47. AUTHENTICATION ARCHITECTURE
+
+Authentication and encryption are separate concerns.
+
+Authentication credentials must not directly become encryption keys without proper derivation and separation.
+
+---
+
+# 48. PRIMARY AUTHENTICATION METHODS
+
+Supported methods include:
+
+### Master Password
+
+Primary authentication mechanism.
+
+Requirements:
+
+* Never stored in plaintext
+* Never transmitted
+* Used only for secure derivation processes
+
+---
+
+### Hardware Security Keys
+
+Support modern security keys.
+
+Examples:
+
+* YubiKey
+* Compatible FIDO2 devices
+
+---
+
+### Platform Biometrics
+
+Support operating-system-provided biometric authentication.
+
+Examples:
+
+* Windows Hello
+* Fingerprint authentication
+* Facial recognition
+
+Biometric processing must remain delegated to the operating system.
+
+---
+
+# 49. MULTI-FACTOR AUTHENTICATION
+
+Support:
+
+* TOTP
+* Hardware keys
+* Recovery codes
+
+---
+
+## Recovery Codes
+
+Requirements:
+
+* Secure generation
+* Single-use
+* User export options
+* Revocation capability
+
+---
+
+# 50. SESSION MANAGEMENT
+
+Session handling must prioritize security.
+
+---
+
+## Session Timeout
+
+User configurable.
+
+---
+
+## Auto-Lock
+
+Configurable range:
+
+* 30 seconds
+* Up to 24 hours
+
+---
+
+## Panic Lock
+
+Must immediately:
+
+* Lock vault
+* Remove decrypted content
+* Clear temporary secrets
+
+---
+
+## System Events
+
+Automatically lock on:
+
+* Screen lock
+* Sleep
+* Hibernate
+* Lid close
+
+---
+
+# 51. SECURITY COMPLETION REQUIREMENT
+
+No security feature is considered complete until:
+
+* Threat model reviewed
+* Security review completed
+* Documentation updated
+* Testing completed
+* Recovery scenarios validated
+* Failure modes verified
+
+Only then may implementation proceed to the next phase.
+
+---
+
+END OF PART 2
+
+# KEPTR MASTER PROMPT
+
+## PART 3 — VAULT ARCHITECTURE, DATA MODELS, FILE FORMATS, STORAGE, BACKUPS & DATA ORGANIZATION
+
+---
+
+# 52. VAULT ARCHITECTURE PHILOSOPHY
+
+The vault is the core of Keptr.
+
+Everything in Keptr ultimately exists to securely store, organize, protect, retrieve, synchronize, recover, and manage sensitive user information.
+
+The vault architecture must prioritize:
+
+* Security
+* Privacy
+* Performance
+* Reliability
+* Scalability
+* Auditability
+* Long-term maintainability
+
+The vault must remain usable for both simple users and power users without sacrificing security.
+
+---
+
+# 53. VAULT DESIGN PRINCIPLES
+
+Every vault must be:
+
+### Independent
+
+A vault must be logically isolated from other vaults.
+
+---
+
+### Encrypted
+
+All vault content must remain encrypted at rest.
+
+---
+
+### Recoverable
+
+Users must be able to restore vaults securely through approved recovery mechanisms.
+
+---
+
+### Portable
+
+Authorized exports and backups must remain portable across supported platforms.
+
+---
+
+### Versioned
+
+Vault formats must support future upgrades without breaking older data.
+
+---
+
+# 54. CORE DATA TYPES
+
+Keptr is designed to store highly sensitive information.
+
+The system must support purpose-driven record types rather than unnecessary category proliferation.
+
+The initial set of record types should remain focused on practical, real-world usage.
+
+---
+
+## Login
+
+Used for websites, services, applications, and online accounts.
+
+Typical fields may include:
+
+* Name
+* URL
+* Username
+* Password
+* TOTP
+* Notes
+* Attachments
+* Tags
+* Custom Fields
+
+---
+
+## Email Account
+
+Used for email providers and email identities.
+
+Typical fields may include:
+
+* Account Name
+* Email Address
+* Password
+* Recovery Information
+* Authentication Methods
+* Notes
+* Attachments
+
+---
+
+## Passkey
+
+Used for passwordless authentication credentials.
+
+Typical fields may include:
+
+* Display Name
+* Relying Party
+* Credential Identifier
+* Public Key Data
+* User Handle
+* Metadata
+
+---
+
+## Secure Note
+
+Used for sensitive text information.
+
+Typical fields may include:
+
+* Title
+* Content
+* Rich Text Content
+* Markdown Content
+* Attachments
+* Tags
+
+---
+
+## Payment Information
+
+Used for financial credentials.
+
+Typical fields may include:
+
+* Card Name
+* Cardholder
+* Card Number
+* Expiration
+* Security Code
+* PIN
+* Billing Information
+* Notes
+
+---
+
+## Identity
+
+Used for personal identity records.
+
+Typical fields may include:
+
+* Full Name
+* Addresses
+* Phone Numbers
+* Email Addresses
+* Government Information
+* Supporting Documents
+
+---
+
+## Authentication Secret
+
+Used for:
+
+* Recovery Codes
+* API Keys
+* Access Tokens
+* Security Tokens
+* License Keys
+* Similar confidential credentials
+
+---
+
+## Document Record
+
+Used for protected files and attachments.
+
+Typical fields may include:
+
+* File Metadata
+* Encrypted Attachment References
+* Notes
+* Tags
+
+---
+
+## Custom Record
+
+Allows users to define secure custom structures.
+
+Requirements:
+
+* Flexible fields
+* Validation support
+* Consistent encryption model
+
+---
+
+# 55. FIELD SECURITY REQUIREMENTS
+
+Every sensitive field must be encrypted.
+
+Examples include:
+
+* Passwords
+* API Keys
+* TOTP Seeds
+* Recovery Codes
+* Card Numbers
+* PINs
+* Private Notes
+* Authentication Secrets
+
+No sensitive field may remain stored in plaintext.
+
+---
+
+# 56. CUSTOM FIELDS
+
+Users may create custom fields.
+
+Supported field types may include:
+
+* Text
+* Password
+* Number
+* URL
+* Email
+* Date
+* Phone
+* Boolean
+* Secret Value
+
+Custom fields must inherit the same security protections as built-in fields.
+
+---
+
+# 57. ATTACHMENT SUPPORT
+
+Vault items may contain attachments.
+
+Attachments must:
+
+* Remain encrypted
+* Support large file sizes
+* Support synchronization
+* Support backup inclusion
+* Support export and recovery
+
+No attachment may be stored unencrypted.
+
+---
+
+# 58. DATA ORGANIZATION SYSTEM
+
+Keptr must provide powerful organizational capabilities.
+
+---
+
+## Folders
+
+Requirements:
+
+* Hierarchical nesting
+* Unlimited depth where practical
+* Drag-and-drop support
+* Custom naming
+* Optional icons
+
+---
+
+## Tags
+
+Requirements:
+
+* Multiple tags per item
+* Color support
+* Auto-completion
+* Fast filtering
+
+---
+
+## Categories
+
+Categories organize items by record type.
+
+Examples:
+
+* Logins
+* Email Accounts
+* Notes
+* Payment Information
+* Identities
+* Documents
+
+---
+
+## Favorites
+
+Users may pin frequently accessed records.
+
+Favorites must support:
+
+* Fast access
+* Dedicated filtering
+* Consistent synchronization
+
+---
+
+# 59. SEARCH SYSTEM
+
+Search must be extremely fast.
+
+Requirements:
+
+* Full-text search
+* Incremental search
+* Filter support
+* Keyboard navigation
+* Instant results where possible
+
+---
+
+## Search Filters
+
+Support filtering by:
+
+* Vault
+* Category
+* Folder
+* Tag
+* Favorites
+* Date
+* Custom metadata
+
+---
+
+## Security Requirement
+
+Search indexing must never weaken encryption guarantees.
+
+---
+
+# 60. MULTI-VAULT ARCHITECTURE
+
+Keptr must support multiple independent vaults.
+
+Examples:
+
+* Personal
+* Work
+* Family
+* Projects
+
+---
+
+## Multi-Vault Requirements
+
+Each vault must support:
+
+* Independent encryption boundaries
+* Independent backups
+* Independent synchronization
+* Independent sharing controls
+
+---
+
+## Vault Switching
+
+Users may switch vaults without complete re-authentication when permitted by session policies.
+
+Security controls must remain enforceable.
+
+---
+
+# 61. PROPRIETARY FILE FORMAT STRATEGY
+
+Keptr shall define dedicated encrypted formats for secure data handling.
+
+Formats must prioritize:
+
+* Security
+* Integrity
+* Forward compatibility
+* Recovery
+* Performance
+
+---
+
+# 62. .KORE FORMAT
+
+## Purpose
+
+Primary encrypted structured data format.
+
+Used for sensitive vault records.
+
+---
+
+## Supported Content
+
+Examples:
+
+* Logins
+* Email Accounts
+* Passkeys
+* TOTP Secrets
+* API Credentials
+* Recovery Data
+* Secure Notes
+* Payment Information
+* Identity Information
+* Similar sensitive content
+
+---
+
+## Security Properties
+
+Requirements:
+
+* Strong authenticated encryption
+* Integrity validation
+* Tamper evidence
+* Forward compatibility
+* Metadata minimization
+
+---
+
+## Versioning
+
+The format must include version information.
+
+Future versions must support migration without data loss.
+
+---
+
+## Metadata Leakage Prevention
+
+Headers must reveal as little information as practical.
+
+Sensitive metadata must remain protected.
+
+---
+
+# 63. .KAPS FORMAT
+
+## Purpose
+
+Encrypted file and attachment container.
+
+Used for:
+
+* Documents
+* Images
+* Audio
+* Video
+* Archives
+* Binary Files
+
+---
+
+## Supported File Categories
+
+### Images
+
+* PNG
+* JPEG
+* JPG
+* WebP
+* SVG
+* GIF
+* BMP
+* HEIC
+* HEIF
+* TIFF
+
+---
+
+### Documents
+
+* PDF
+* TXT
+* Markdown
+* DOC
+* DOCX
+* XLS
+* XLSX
+* PPT
+* PPTX
+* ODT
+* RTF
+* CSV
+* XML
+* JSON
+* HTML
+
+---
+
+### Archives
+
+* ZIP
+* 7Z
+* TAR
+* GZ
+* TAR.GZ
+* BZ2
+* RAR
+* ISO
+
+---
+
+### Audio
+
+* MP3
+* FLAC
+* WAV
+* AAC
+* OGG
+* M4A
+* WMA
+
+---
+
+### Video
+
+* MP4
+* WEBM
+* AVI
+* MKV
+* MOV
+* WMV
+* FLV
+
+---
+
+### Other Files
+
+Any arbitrary binary file should be supported.
+
+---
+
+## Security Properties
+
+Requirements:
+
+* Strong encryption
+* Integrity validation
+* Tamper evidence
+* Metadata protection
+
+---
+
+## Streaming Encryption
+
+Large files must support streaming encryption.
+
+Goals:
+
+* Low memory usage
+* Efficient processing
+* Large file support
+
+---
+
+## Chunk-Based Architecture
+
+Files should support chunked processing.
+
+Benefits:
+
+* Partial access
+* Efficient synchronization
+* Reduced memory overhead
+
+---
+
+## Filename Protection
+
+Original filenames must remain encrypted.
+
+---
+
+## Compression
+
+Optional compression may occur before encryption when beneficial.
+
+Compression must never weaken security guarantees.
+
+---
+
+# 64. .KEPT FORMAT
+
+## Purpose
+
+Backup, export, import, and recovery format.
+
+---
+
+## Contents
+
+May contain:
+
+* Encrypted .kore data
+* Encrypted .kaps data
+* Vault metadata
+* Version information
+* Recovery metadata
+
+---
+
+## Security Properties
+
+Requirements:
+
+* Encrypted
+* Self-contained
+* Portable
+* Recoverable
+* Versioned
+
+---
+
+## Atomic Restoration
+
+Restoration should be all-or-nothing whenever practical.
+
+Partial restoration must not corrupt vault state.
+
+---
+
+## Integrity Protection
+
+Backups must support strong integrity verification.
+
+---
+
+# 65. LOCAL STORAGE ARCHITECTURE
+
+Local storage must prioritize:
+
+* Security
+* Reliability
+* Performance
+
+---
+
+## Core Requirements
+
+Local vault data must remain encrypted.
+
+No plaintext vault database may exist.
+
+---
+
+## Portable Vault Support
+
+Users should be able to maintain portable encrypted vaults when desired.
+
+Portable operation must preserve security guarantees.
+
+---
+
+# 66. DATABASE ARCHITECTURE
+
+The primary local database architecture must support:
+
+* Encryption
+* Reliability
+* Query efficiency
+* Long-term maintainability
+
+---
+
+## Requirements
+
+Database must support:
+
+* Transactions
+* Integrity validation
+* Corruption recovery strategies
+* Efficient indexing
+
+---
+
+# 67. DATA INTEGRITY PROTECTION
+
+Every storage layer must support integrity verification.
+
+Requirements:
+
+* Corruption detection
+* Tamper detection
+* Validation mechanisms
+
+Users must be informed when integrity issues are detected.
+
+---
+
+# 68. IMPORT SYSTEM
+
+Keptr must support secure imports.
+
+---
+
+## Import Requirements
+
+Imports must:
+
+* Validate structure
+* Validate integrity
+* Prevent corruption
+* Protect existing data
+
+---
+
+## Import Sources
+
+Future support may include migration from competing vault products where security requirements permit.
+
+---
+
+# 69. EXPORT SYSTEM
+
+Exports must be intentional and secure.
+
+---
+
+## Export Requirements
+
+Exports must:
+
+* Require authorization
+* Support encryption
+* Verify integrity
+* Preserve portability
+
+---
+
+# 70. BACKUP ARCHITECTURE
+
+Backups are mandatory.
+
+Data loss prevention is a core product requirement.
+
+---
+
+## Automatic Backups
+
+Support:
+
+* Silent encrypted backups
+* Timestamped backups
+* Retention policies
+
+---
+
+## Manual Backups
+
+Users must be able to create backups on demand.
+
+---
+
+## Verification
+
+Backups must be validated before replacing previous backups whenever practical.
+
+---
+
+## Backup Integrity
+
+Backups must support:
+
+* Corruption detection
+* Integrity verification
+* Recovery validation
+
+---
+
+# 71. RETENTION POLICIES
+
+Users should control:
+
+* Backup count
+* Retention duration
+* Storage location
+
+Retention policies must balance safety and storage efficiency.
+
+---
+
+# 72. DATA RECOVERY REQUIREMENTS
+
+Recovery mechanisms must be tested.
+
+Recovery is not complete until restoration has been validated.
+
+---
+
+## Recovery Validation
+
+Users should be able to verify:
+
+* Backup usability
+* Backup integrity
+* Recovery readiness
+
+before disaster occurs.
+
+---
+
+# 73. FUTURE DATA MODEL COMPATIBILITY
+
+All data models must support future expansion.
+
+Requirements:
+
+* Forward compatibility
+* Schema evolution
+* Migration support
+
+Future versions must avoid breaking existing user data.
+
+---
+
+# 74. DATA COMPLETION STANDARD
+
+No vault-related feature is complete until:
+
+* Encryption validated
+* Integrity verified
+* Backup compatibility verified
+* Recovery tested
+* Documentation updated
+* Version updated
+* context.md updated
+
+Only then may development proceed to the next implementation phase.
+
+---
+
+END OF PART 3
+
+# KEPTR MASTER PROMPT
+
+## PART 4 — SECURITY FEATURES, GENERATORS, SYSTEM INTEGRATION, AUTOFILL ENGINE & BROWSER EXTENSION ARCHITECTURE
+
+---
+
+# 75. SECURITY FEATURE PHILOSOPHY
+
+Security is not limited to encryption.
+
+Keptr must implement multiple layers of practical protection that safeguard users during everyday use.
+
+These protections must work together to reduce risk while maintaining usability.
+
+Security features must be:
+
+* Useful
+* Understandable
+* Reliable
+* Transparent
+* Configurable where appropriate
+
+No security feature should create a false sense of protection.
+
+---
+
+# 76. PASSWORD GENERATOR
+
+Keptr must include a professional-grade password generator.
+
+The generator must prioritize:
+
+* Entropy
+* Security
+* Usability
+* Transparency
+
+---
+
+## Length Configuration
+
+Supported range:
+
+* Minimum: 4 characters
+* Maximum: 128 characters
+
+Future expansion beyond 128 characters should remain possible.
+
+---
+
+## Character Sets
+
+Support:
+
+* Uppercase letters
+* Lowercase letters
+* Numbers
+* Symbols
+
+Users must be able to enable or disable each category independently.
+
+---
+
+## Ambiguous Character Exclusion
+
+Optional exclusion of visually similar characters.
+
+Examples include:
+
+* 0
+* O
+* l
+* 1
+* I
+
+---
+
+## Pronounceable Passwords
+
+Support generation of human-friendly passwords using structured syllable generation.
+
+These passwords must still provide meaningful entropy.
+
+---
+
+## Passphrase Generation
+
+Support word-based passphrases.
+
+Requirements:
+
+* Multiple word counts
+* Custom separators
+* Entropy display
+* User customization
+
+---
+
+## Entropy Display
+
+Generated passwords must display estimated entropy.
+
+The goal is user education and transparency.
+
+---
+
+## Password History
+
+Recently generated passwords may be temporarily stored during the current unlocked session.
+
+Requirements:
+
+* Ephemeral storage only
+* Automatic deletion on lock
+* Automatic deletion on exit
+* Never synchronized
+* Never backed up
+
+---
+
+# 77. USERNAME GENERATOR
+
+Keptr must include username generation tools.
+
+---
+
+## Supported Modes
+
+### Random Words
+
+Examples:
+
+* adjective + noun
+* noun + noun
+
+---
+
+### Random Characters
+
+Support fully random identifiers.
+
+---
+
+### Alias Patterns
+
+Support email alias formats.
+
+Example:
+
+[user+alias@example.com](mailto:user+alias@example.com)
+
+---
+
+### Catch-All Support
+
+Support generation patterns suitable for catch-all domains.
+
+---
+
+# 78. BREACH DETECTION
+
+Keptr must help users identify compromised credentials.
+
+---
+
+## Privacy Requirements
+
+Credential checking must preserve user privacy.
+
+No plaintext password may ever be transmitted.
+
+---
+
+## k-Anonymity Model
+
+The preferred implementation follows a privacy-preserving k-anonymity approach.
+
+Only a partial hash prefix may be transmitted.
+
+Comparison of results must occur locally whenever possible.
+
+---
+
+## User Notifications
+
+When a compromised credential is detected:
+
+Users should receive:
+
+* Clear explanation
+* Risk indication
+* Recommended actions
+
+Notifications must remain professional and non-alarmist.
+
+---
+
+# 79. PANIC LOCK
+
+Keptr must support immediate emergency vault locking.
+
+---
+
+## Trigger Methods
+
+Examples:
+
+* Keyboard shortcut
+* System tray action
+* Quick action menu
+
+---
+
+## Panic Lock Actions
+
+Must immediately:
+
+* Lock all vaults
+* Clear decrypted secrets
+* Clear temporary memory
+* Close sensitive views where appropriate
+
+---
+
+## Configurable Hotkey
+
+Users should be able to configure the panic lock shortcut.
+
+Example:
+
+Ctrl + Shift + L
+
+---
+
+# 80. AUTO-LOCK SYSTEM
+
+Automatic locking is a mandatory security feature.
+
+---
+
+## Inactivity Lock
+
+Configurable range:
+
+* 30 seconds
+* Up to 24 hours
+
+---
+
+## System Event Locking
+
+Automatically lock when:
+
+* Screen locks
+* Device sleeps
+* Device hibernates
+* Laptop lid closes
+* User signs out
+
+---
+
+## Manual Locking
+
+Users must be able to lock vaults instantly.
+
+---
+
+# 81. CLIPBOARD SECURITY
+
+Clipboard operations are high-risk and require special handling.
+
+---
+
+## Auto-Clear
+
+Clipboard contents must automatically clear after a configurable duration.
+
+Default:
+
+30 seconds
+
+Users may customize this behavior.
+
+---
+
+## Sensitive Data Handling
+
+Examples:
+
+* Passwords
+* Recovery codes
+* API keys
+* TOTP secrets
+
+must receive enhanced protection.
+
+---
+
+## Clipboard History Protection
+
+Where supported by the operating system:
+
+Prevent sensitive data from remaining in clipboard history.
+
+---
+
+## User Awareness
+
+Users should understand when sensitive data has been copied and when it has been cleared.
+
+---
+
+# 82. SCREENSHOT PROTECTION
+
+Keptr must provide mechanisms to reduce accidental disclosure.
+
+---
+
+## Sensitive UI Detection
+
+Sensitive fields should receive enhanced protection.
+
+Examples:
+
+* Passwords
+* Recovery codes
+* Secret keys
+
+---
+
+## Capture Response
+
+When supported:
+
+Sensitive content may be hidden during active capture events.
+
+---
+
+## Optional Screenshot Blocking
+
+Where operating system capabilities permit:
+
+Provide optional screenshot prevention controls.
+
+Users must understand platform limitations.
+
+---
+
+# 83. SECURE DELETION
+
+Deleted information should not remain recoverable through ordinary means.
+
+---
+
+## Vault Data Deletion
+
+Deletion workflows should:
+
+* Remove references
+* Securely handle temporary storage
+* Minimize residual artifacts
+
+---
+
+## Temporary Files
+
+Temporary files must receive secure cleanup.
+
+---
+
+## Export Cleanup
+
+Temporary export artifacts must be removed after use.
+
+---
+
+# 84. UNSAFE ENVIRONMENT DETECTION
+
+Keptr should identify environments that may increase security risk.
+
+---
+
+## Detection Examples
+
+Potential checks may include:
+
+* Disabled operating system security features
+* Reduced exploit protections
+* Security misconfigurations
+
+---
+
+## User Guidance
+
+Warnings should be:
+
+* Informative
+* Actionable
+* Non-intrusive
+
+---
+
+## Virtualization Awareness
+
+Virtualization itself is not inherently unsafe.
+
+Users may receive informational notices when appropriate.
+
+---
+
+# 85. SYSTEM TRAY INTEGRATION
+
+Keptr must support persistent system tray integration.
+
+---
+
+## Tray Features
+
+Provide quick access to:
+
+* Lock Vault
+* Search Vault
+* Generate Password
+* Settings
+* Quit Application
+
+---
+
+## Status Indicators
+
+Display:
+
+* Locked
+* Unlocked
+* Synchronizing
+* Error states
+
+where appropriate.
+
+---
+
+## Minimize to Tray
+
+Users should be able to configure:
+
+* Close to tray
+* Minimize to tray
+
+---
+
+# 86. SYSTEM SEARCH ACCESS
+
+Provide fast access to vault data.
+
+Capabilities may include:
+
+* Quick search
+* Global shortcuts
+* Fast item lookup
+
+Search operations must respect vault lock state.
+
+---
+
+# 87. BROWSER INTEGRATION PHILOSOPHY
+
+Browser integration is a core capability.
+
+The extension and desktop application must operate as a coordinated security system.
+
+Neither component should weaken the overall security model.
+
+---
+
+# 88. DESKTOP ↔ EXTENSION COMMUNICATION
+
+Communication must be authenticated and secure.
+
+---
+
+## Preferred Method
+
+Native messaging architecture.
+
+---
+
+## Fallback Method
+
+Secure local communication mechanisms when necessary.
+
+---
+
+## Requirements
+
+Communication must:
+
+* Authenticate endpoints
+* Prevent impersonation
+* Prevent unauthorized requests
+* Minimize exposed attack surface
+
+---
+
+# 89. AUTOFILL ENGINE
+
+Keptr must include a professional autofill system.
+
+---
+
+## Goals
+
+* Fast
+* Reliable
+* Accurate
+* Secure
+
+---
+
+## Field Detection
+
+Detect:
+
+* Username fields
+* Password fields
+* Email fields
+* Authentication fields
+* Custom fields
+
+---
+
+## Intelligent Mapping
+
+Support:
+
+* Custom field mappings
+* Site-specific rules
+* User overrides
+
+---
+
+## Multi-Page Login Support
+
+Handle authentication workflows spanning multiple pages.
+
+---
+
+## Fill Confirmation
+
+Users may optionally require confirmation before filling credentials.
+
+---
+
+# 90. LOGIN MATCHING ENGINE
+
+Matching must support:
+
+* Domains
+* Subdomains
+* Paths
+* Custom rules
+
+---
+
+## Match Transparency
+
+Users should understand why credentials are suggested.
+
+---
+
+## Anti-Phishing Goals
+
+Matching logic should reduce accidental credential disclosure to malicious websites.
+
+---
+
+# 91. CREDENTIAL CAPTURE
+
+Keptr should detect newly created or modified credentials.
+
+---
+
+## Registration Detection
+
+Support saving credentials during account creation workflows.
+
+---
+
+## Password Change Detection
+
+Support updating stored credentials when passwords change.
+
+---
+
+## User Approval
+
+Credential capture must require user confirmation.
+
+---
+
+# 92. BROWSER EXTENSION ARCHITECTURE
+
+The extension is an extension of the desktop application.
+
+It is not an independent password manager.
+
+---
+
+## Core Principles
+
+The extension must:
+
+* Remain lightweight
+* Minimize secret storage
+* Rely on desktop security controls
+* Preserve zero-knowledge architecture
+
+---
+
+# 93. EXTENSION FEATURES
+
+Support:
+
+* Autofill
+* Credential capture
+* Password generation
+* Vault search
+* Credential selection
+* Secure copy actions
+
+---
+
+## Quick Access
+
+Provide fast access to:
+
+* Logins
+* Passkeys
+* Recent items
+* Favorites
+
+---
+
+# 94. EXTENSION SECURITY REQUIREMENTS
+
+The extension must never weaken vault security.
+
+---
+
+## Secret Storage Restrictions
+
+The extension must not permanently store vault secrets.
+
+---
+
+## Session Handling
+
+Secrets should remain available only for active authorized sessions.
+
+---
+
+## Content Script Isolation
+
+Content scripts must remain isolated from page scripts whenever possible.
+
+---
+
+## Origin Validation
+
+Validate communication origins.
+
+Reject unauthorized requests.
+
+---
+
+# 95. CONTENT SECURITY POLICY
+
+Maintain strict Content Security Policy compliance.
+
+Goals:
+
+* Reduce injection risks
+* Reduce XSS exposure
+* Improve extension security posture
+
+---
+
+# 96. MANIFEST REQUIREMENTS
+
+Use modern browser extension architecture.
+
+Requirements:
+
+* Manifest V3 compliance where supported
+* Security-first implementation
+* Future maintainability
+
+---
+
+# 97. SUPPORTED BROWSERS
+
+Initial support:
+
+* Google Chrome
+* Chromium-based browsers
+* Microsoft Edge
+* Brave
+* Mozilla Firefox
+
+---
+
+## Planned Support
+
+Future:
+
+* Safari
+
+when platform support becomes available.
+
+---
+
+# 98. PASSKEY SUPPORT
+
+Browser integration must support modern passkey workflows.
+
+Requirements:
+
+* Secure credential handling
+* Consistent user experience
+* Standards-compliant behavior
+
+---
+
+# 99. BROWSER FEATURE COMPLETION REQUIREMENTS
+
+No browser feature is complete until:
+
+* Security reviewed
+* Phishing risks reviewed
+* Extension reviewed
+* Communication validated
+* Documentation updated
+* Version updated
+* context.md updated
+
+Only then may development proceed.
+
+---
+
+END OF PART 4
+
+# KEPTR MASTER PROMPT
+
+## PART 5 — CLOUD ARCHITECTURE, ZERO-KNOWLEDGE SYNC, MULTI-DEVICE SYSTEM, SHARING, RECOVERY & DATA CONTINUITY
+
+---
+
+# 100. CLOUD ARCHITECTURE MANDATE
+
+Cloud infrastructure is a **core system of Keptr**, not an auxiliary feature.
+
+It is required for:
+
+* Multi-device synchronization
+* Account-based vault access
+* Data recovery after device loss
+* Cross-platform continuity
+* Backup restoration
+* Secure sharing workflows
+
+Cloud functionality must be fully integrated into the product architecture from the ground up.
+
+It must not be treated as optional, experimental, or secondary.
+
+---
+
+# 101. CLOUD DESIGN PRINCIPLES
+
+The cloud system must be:
+
+* Zero-knowledge
+* End-to-end encrypted
+* Provider-independent in design philosophy
+* Highly available
+* Scalable
+* Secure by default
+* Audit-friendly
+* Failure-resilient
+
+---
+
+## Core Rule
+
+The cloud must never have the ability to decrypt user data under any circumstance.
+
+---
+
+# 102. ZERO-KNOWLEDGE CLOUD MODEL
+
+Keptr cloud architecture must follow strict zero-knowledge principles.
+
+---
+
+## Server Limitations
+
+Servers may only store:
+
+* Encrypted vault blobs
+* Encrypted attachments
+* Encrypted backup data
+* Account identifiers (non-sensitive metadata)
+* Device registration metadata
+* Sync state metadata
+
+---
+
+## Server Prohibitions
+
+Servers must never store or access:
+
+* Master passwords
+* Raw encryption keys
+* Plaintext vault data
+* Plaintext attachments
+* Decryption secrets
+* Recovery secrets in usable form
+
+---
+
+# 103. ACCOUNT SYSTEM ARCHITECTURE
+
+Keptr must implement a secure account system.
+
+---
+
+## Account Purpose
+
+Accounts enable:
+
+* Vault synchronization
+* Multi-device access
+* Backup recovery
+* Secure sharing
+* Device linking
+
+---
+
+## Account Security Model
+
+Accounts must be:
+
+* Securely authenticated
+* Separate from encryption keys
+* Not usable to decrypt data directly
+
+---
+
+## Authentication Methods
+
+Supported authentication mechanisms:
+
+* Master password-derived authentication
+* Multi-factor authentication (TOTP)
+* Hardware security keys (FIDO2)
+* Recovery codes
+
+---
+
+# 104. DEVICE REGISTRATION SYSTEM
+
+Each device must be uniquely registered.
+
+---
+
+## Device Identity
+
+Each device must have:
+
+* Unique cryptographic identity
+* Device-bound keys
+* Trust relationship with account
+
+---
+
+## Device Authorization
+
+New devices must be:
+
+* Verified
+* Authenticated
+* Approved through secure flows
+
+---
+
+## Device Revocation
+
+Users must be able to:
+
+* Remove devices
+* Revoke access
+* Invalidate sessions remotely
+
+---
+
+# 105. MULTI-DEVICE SYNCHRONIZATION
+
+Keptr must support seamless synchronization across devices.
+
+---
+
+## Sync Requirements
+
+Synchronization must:
+
+* Be secure
+* Be encrypted end-to-end
+* Be conflict-aware
+* Be efficient
+* Be reliable
+
+---
+
+## Sync Scope
+
+Includes:
+
+* Vault data (.kore)
+* Attachments (.kaps)
+* Metadata
+* Settings (where appropriate)
+* Folder structures
+* Tags and organization
+
+---
+
+## Sync Trigger Events
+
+Sync may occur on:
+
+* Login
+* Vault unlock
+* Data modification
+* Manual sync request
+* Scheduled intervals
+
+---
+
+# 106. SYNC ENGINE ARCHITECTURE
+
+The sync engine must be:
+
+* Deterministic
+* Conflict-aware
+* Version-controlled
+* Securely encrypted
+* Resilient to partial failures
+
+---
+
+## Sync Process Flow
+
+1. Local changes detected
+2. Changes encrypted locally
+3. Encrypted payload uploaded
+4. Server stores encrypted state
+5. Other devices retrieve encrypted updates
+6. Local decryption occurs only on authorized devices
+
+---
+
+# 107. CONFLICT RESOLUTION SYSTEM
+
+Conflicts may occur when multiple devices modify data.
+
+---
+
+## Conflict Strategy Requirements
+
+The system must support:
+
+* Deterministic resolution rules
+* Version tracking
+* Timestamp-based resolution (with caution)
+* Manual user resolution when necessary
+
+---
+
+## Conflict Safety Principle
+
+No conflict resolution strategy may:
+
+* Lose user data silently
+* Overwrite without traceability
+* Destroy recoverable history
+
+---
+
+# 108. CLOUD STORAGE MODEL
+
+Cloud storage must be:
+
+* Encrypted at rest
+* Redundant
+* Highly available
+* Integrity-checked
+
+---
+
+## Storage Structure
+
+Cloud storage may include:
+
+* Encrypted vault shards
+* Encrypted attachments
+* Encrypted backups
+* Sync manifests
+
+---
+
+## Data Integrity
+
+All stored data must include:
+
+* Cryptographic integrity verification
+* Tamper detection mechanisms
+
+---
+
+# 109. MULTI-REGION RELIABILITY (DESIGN GOAL)
+
+Cloud architecture should support:
+
+* Redundant storage
+* Failover capability
+* High availability design
+
+This ensures vault access is not dependent on a single failure point.
+
+---
+
+# 110. DATA RECOVERY ARCHITECTURE
+
+Recovery is a core system requirement.
+
+---
+
+## Recovery Scenarios
+
+Keptr must support recovery after:
+
+* Device loss
+* Application reinstallation
+* OS reset
+* Hardware failure
+* Account re-authentication
+
+---
+
+## Recovery Flow
+
+1. User authenticates account
+2. Device is re-registered
+3. Encrypted vault data is retrieved
+4. Local decryption keys are reconstructed via secure derivation
+5. Vault is restored securely
+
+---
+
+# 111. ENCRYPTED BACKUP IN CLOUD
+
+Cloud backups must:
+
+* Remain encrypted at all times
+* Be user-owned
+* Be recoverable only with valid credentials
+* Never expose plaintext data server-side
+
+---
+
+# 112. SECURE SHARING SYSTEM
+
+Keptr must support secure sharing of vault items.
+
+---
+
+## Sharing Requirements
+
+Shared data must be:
+
+* End-to-end encrypted
+* Time-limited (optional)
+* Revocable
+* Access-controlled
+* Auditable
+
+---
+
+## Sharing Models
+
+Support:
+
+* View-only access
+* Limited access
+* Time-expiring access
+* One-time access links
+
+---
+
+## Revocation
+
+Users must be able to:
+
+* Immediately revoke shared access
+* Invalidate shared sessions
+
+---
+
+# 113. EPHEMERAL ACCESS TOKENS
+
+Shared access must rely on secure ephemeral tokens.
+
+Requirements:
+
+* Time-limited validity
+* Scope-limited permissions
+* Device-independent verification
+
+---
+
+# 114. CROSS-DEVICE TRUST MODEL
+
+Trust must be explicitly established between devices.
+
+---
+
+## Trust Requirements
+
+Devices must:
+
+* Authenticate securely
+* Exchange cryptographic proofs
+* Validate identity before sync
+
+---
+
+## Trust Revocation
+
+Users must be able to revoke:
+
+* Individual devices
+* Entire sessions
+* Sync permissions
+
+---
+
+# 115. OFFLINE SYNC QUEUING
+
+Keptr must support offline operations.
+
+---
+
+## Requirements
+
+When offline:
+
+* Changes must be queued locally
+* Data must remain encrypted
+* Sync must resume automatically when online
+
+---
+
+# 116. BANDWIDTH OPTIMIZATION
+
+Sync system should:
+
+* Minimize redundant transfers
+* Use delta updates where possible
+* Avoid unnecessary re-uploading of unchanged data
+
+---
+
+# 117. CLOUD SECURITY BOUNDARY
+
+Cloud must be treated as an untrusted environment.
+
+---
+
+## Security Rule
+
+All data sent to cloud must already be encrypted locally.
+
+No exception is permitted.
+
+---
+
+# 118. CLOUD FAILURE RESILIENCE
+
+System must handle:
+
+* Partial outages
+* Network interruptions
+* Sync delays
+* Storage inconsistencies
+
+Without data loss or corruption.
+
+---
+
+# 119. DATA CONSISTENCY MODEL
+
+Keptr must ensure:
+
+* Eventual consistency across devices
+* Strong local consistency guarantees
+* Conflict-safe synchronization
+
+---
+
+# 120. ACCOUNT RECOVERY SYSTEM
+
+Users must be able to recover accounts securely.
+
+---
+
+## Recovery Methods
+
+Supported:
+
+* Recovery codes
+* Multi-factor authentication
+* Hardware keys (if configured)
+* Identity verification flow (design-dependent)
+
+---
+
+## Recovery Constraints
+
+Recovery must:
+
+* Never weaken encryption
+* Never expose vault contents
+* Never bypass zero-knowledge model
+
+---
+
+# 121. EMERGENCY ACCESS SYSTEM
+
+Emergency access allows trusted recovery scenarios.
+
+---
+
+## Requirements
+
+* Trusted contacts
+* Waiting period system
+* Notification to user
+* Revocation option during waiting period
+
+---
+
+# 122. WAITING PERIOD SECURITY MODEL
+
+Emergency access must include a delay mechanism.
+
+During delay:
+
+* User may cancel request
+* System must notify owner
+* Access is not granted immediately
+
+---
+
+# 123. AUDIT LOGGING (ENCRYPTED)
+
+Keptr may maintain audit logs.
+
+Requirements:
+
+* Logs must be encrypted
+* Logs must not expose sensitive data
+* Logs must be user-accessible where appropriate
+
+---
+
+# 124. CLOUD ARCHITECTURE COMPLETION RULE
+
+Cloud features are only complete when:
+
+* Zero-knowledge verified
+* Sync verified
+* Recovery verified
+* Multi-device tested
+* Conflict handling tested
+* Security reviewed
+* Encryption validated
+* Documentation updated
+* context.md updated
+* Version updated
+
+Only then may development proceed.
+
+---
+
+END OF PART 5
+
+# KEPTR MASTER PROMPT
+
+## PART 6 — UI/UX DESIGN SYSTEM, VISUAL LANGUAGE, BRANDING, COMPONENT STANDARDS & USER EXPERIENCE PHILOSOPHY
+
+---
+
+# 125. UI/UX DESIGN PHILOSOPHY
+
+Keptr’s user experience must feel:
+
+* Modern
+* Professional
+* Minimal
+* Secure
+* Fast
+* Calm
+* Consistent
+* Trustworthy
+
+The interface must communicate clarity and control, not complexity.
+
+Every screen must reduce cognitive load while preserving full functionality.
+
+---
+
+# 126. USER EXPERIENCE PRINCIPLES
+
+## Clarity Over Complexity
+
+Every interaction must be immediately understandable.
+
+---
+
+## Security Transparency
+
+Users must always understand:
+
+* What is being stored
+* What is encrypted
+* What is synced
+* What is shared
+* What is local
+
+---
+
+## Efficiency First
+
+Common tasks must require minimal steps.
+
+---
+
+## Predictability
+
+UI behavior must remain consistent across all platforms.
+
+---
+
+## No Surprise Behavior
+
+The system must not perform hidden actions or unexpected changes.
+
+---
+
+# 127. LANGUAGE & COPY STYLE
+
+All UI text must be:
+
+* Human-readable
+* Professional
+* Concise
+* Non-technical when possible
+* Non-AI sounding
+
+---
+
+## Forbidden Style
+
+Do NOT use:
+
+* Robotic phrases
+* Developer terminology in UI
+* Over-explained system descriptions
+* Technical jargon in user-facing areas
+
+---
+
+## Preferred Style
+
+Examples:
+
+* “Settings”
+* “Add Item”
+* “Lock Vault”
+* “Generate Password”
+* “Import Data”
+
+---
+
+# 128. BRAND IDENTITY SYSTEM
+
+## Official Product Identity
+
+* Name: Keptr
+* Tagline: Your Digital Life, Kept Secure.
+* Primary Brand Color: **#5C7AFF**
+
+No deviation from official branding is permitted.
+
+---
+
+## Color Usage Rule (60–30–10)
+
+### 60% — Base Layer
+
+Neutral background surfaces
+
+### 30% — Secondary Surfaces
+
+Cards, panels, grouped UI
+
+### 10% — Accent
+
+Primary brand color (#5C7AFF)
+
+Used for:
+
+* Buttons
+* Highlights
+* Active states
+* Focus indicators
+
+---
+
+# 129. TYPOGRAPHY SYSTEM
+
+## Primary Font Stack
+
+* Inter (preferred)
+* Segoe UI (Windows fallback)
+* SF Pro (Apple fallback)
+* System UI fallback
+
+---
+
+## Typography Principles
+
+* High readability
+* Consistent hierarchy
+* No decorative fonts
+* No excessive weight variations
+
+---
+
+# 130. ICONOGRAPHY SYSTEM
+
+## Approved Icon Sets
+
+* Lucide Icons
+* Phosphor Icons
+* Google Material Icons (if needed)
+
+---
+
+## Icon Rules
+
+Icons must be:
+
+* Simple
+* Consistent stroke width
+* Monochrome by default
+* No decorative gradients
+* No inconsistent styles
+
+---
+
+# 131. SPACING SYSTEM
+
+All spacing must follow a strict scale:
+
+Base unit:
+
+* 4px system
+
+Allowed increments:
+
+* 4px
+* 8px
+* 12px
+* 16px
+* 24px
+* 32px
+* 48px
+
+No arbitrary spacing values.
+
+---
+
+# 132. BORDER RADIUS SYSTEM
+
+Standardized radius values:
+
+* Small: 4px
+* Medium: 8px
+* Large: 12px
+
+No inconsistent rounding styles.
+
+---
+
+# 133. SHADOW SYSTEM
+
+Shadows must be:
+
+* Subtle
+* Layered
+* Minimal
+* Non-intrusive
+
+Avoid heavy or unrealistic shadows.
+
+---
+
+# 134. MOTION DESIGN SYSTEM
+
+Animations must be:
+
+* Purposeful
+* Fast
+* Non-distracting
+
+---
+
+## Duration Guidelines
+
+* Fast UI: 150ms
+* Standard: 200–250ms
+* Complex transitions: 300ms max
+
+---
+
+## Motion Rules
+
+* No excessive animations
+* No bouncing effects
+* No distracting motion
+* Respect reduced motion settings
+
+---
+
+# 135. COMPONENT ARCHITECTURE
+
+All UI components must be:
+
+* Reusable
+* Accessible
+* Consistent
+* Theme-aware
+* Platform-consistent
+
+---
+
+## Required Component Set
+
+### Core Components
+
+* Buttons (primary, secondary, ghost, danger, icon)
+* Inputs (text, password, secure fields)
+* Search bars
+* Dropdowns
+* Modals
+* Tabs
+* Tooltips
+* Toast notifications
+* Cards
+* Lists
+* Context menus
+* Checkboxes
+* Toggles
+* Sliders
+
+---
+
+## Secure Components
+
+Special components must exist for:
+
+* Password fields
+* Secret display fields
+* Encrypted content previews
+
+These must include:
+
+* Reveal toggles
+* Masking behavior
+* Clipboard safety rules
+
+---
+
+# 136. DESIGN TOKENS SYSTEM
+
+All styling must use centralized design tokens.
+
+Tokens must include:
+
+* Colors
+* Spacing
+* Typography
+* Shadows
+* Radius
+* Animation timing
+
+No hardcoded values in components.
+
+---
+
+# 137. CROSS-PLATFORM UI CONSISTENCY
+
+Keptr must maintain identical UX across:
+
+* Windows desktop application
+* macOS (future)
+* Linux (future)
+* Browser extension
+* Mobile platforms (future)
+
+---
+
+## Consistency Rules
+
+* Same visual language
+* Same interaction patterns
+* Same component behavior
+* Same terminology
+* Same iconography system
+
+---
+
+# 138. BROWSER EXTENSION UI DESIGN
+
+Extension UI must be:
+
+* Lightweight
+* Fast
+* Minimal
+* Functional
+* Secure-focused
+
+---
+
+## Extension Constraints
+
+* Limited screen space
+* Quick interactions
+* Fast autofill access
+* No unnecessary UI complexity
+
+---
+
+# 139. ACCESSIBILITY REQUIREMENTS
+
+Keptr must comply with accessibility standards.
+
+---
+
+## Requirements
+
+* Keyboard navigation support
+* Screen reader compatibility
+* High contrast support
+* Focus indicators
+* Reduced motion support
+
+---
+
+# 140. THEME SYSTEM
+
+Keptr must support:
+
+* Light mode (default)
+* Dark mode (optional)
+
+---
+
+## Theme Rules
+
+* Consistent contrast ratios
+* No low-visibility text
+* No aesthetic-only color choices
+* Accessibility-first design
+
+---
+
+# 141. PROHIBITED UI PRACTICES
+
+The following are strictly forbidden:
+
+* Emojis in UI
+* Cluttered interfaces
+* Default browser form styles
+* Unstyled controls
+* Inconsistent spacing
+* Low-quality icons
+* Flashy animations
+* Overdesigned visuals
+* AI-like explanatory UI text
+
+---
+
+# 142. UX FLOW PRINCIPLES
+
+User flows must be:
+
+* Short
+* Predictable
+* Linear where possible
+* Error-resistant
+
+---
+
+## Example Flow Philosophy
+
+Instead of multiple unnecessary steps:
+
+* Reduce friction
+* Combine related actions
+* Provide smart defaults
+
+---
+
+# 143. ERROR HANDLING UX
+
+Errors must be:
+
+* Clear
+* Non-technical
+* Actionable
+* Calm in tone
+
+---
+
+## Forbidden Error Style
+
+* Stack traces
+* Internal system errors
+* Technical jargon
+
+---
+
+## Preferred Error Style
+
+* “Something went wrong. Please try again.”
+* “We couldn’t save your changes.”
+
+---
+
+# 144. LOADING STATES
+
+Loading states must be:
+
+* Minimal
+* Non-distracting
+* Informative when necessary
+
+Avoid long or unnecessary animations.
+
+---
+
+# 145. EMPTY STATES
+
+Empty states must:
+
+* Explain absence clearly
+* Suggest next actions
+* Avoid technical language
+
+---
+
+# 146. COMPONENT QUALITY REQUIREMENT
+
+No UI component is complete until:
+
+* Accessible
+* Responsive
+* Theme compatible
+* Tested
+* Reusable
+* Documented
+
+---
+
+# 147. UI COMPLETION RULE
+
+No UI feature is complete until:
+
+* UX reviewed
+* Accessibility validated
+* Cross-platform consistency verified
+* Design tokens applied
+* Documentation updated
+* context.md updated
+* Version updated
+
+---
+
+END OF PART 6
+
+# KEPTR MASTER PROMPT
+
+## PART 7 — BUILD SYSTEM, DISTRIBUTION, UPDATES, VERSIONING, REPOSITORY GOVERNANCE, QUALITY ASSURANCE & PRODUCTION READINESS PIPELINE
+
+---
+
+# 148. BUILD SYSTEM PHILOSOPHY
+
+Keptr must use a build system that is:
+
+* Free to use
+* Reproducible
+* Secure
+* Deterministic
+* Auditable
+* Cross-platform ready (future expansion)
+
+The build system must not introduce hidden dependencies, paid services, or proprietary lock-in.
+
+---
+
+# 149. ZERO-COST TOOLCHAIN REQUIREMENT
+
+The entire development and deployment lifecycle must remain zero-cost.
+
+Allowed:
+
+* Free compilers
+* Free build tools
+* Free CI (GitHub Actions free tier)
+* Free signing mechanisms (self-signed where required)
+* Free distribution platforms
+
+Forbidden:
+
+* Paid SDKs
+* Paid cloud services
+* Paid CI/CD pipelines
+* Paid signing certificates
+* Paid analytics or telemetry services
+
+---
+
+# 150. BUILD OUTPUT REQUIREMENTS
+
+## Primary Output
+
+* Windows `.exe` application
+
+Requirements:
+
+* Portable execution supported
+* No mandatory installer required
+
+---
+
+## Optional Outputs
+
+* MSI installer
+* NSIS installer (optional future support)
+
+---
+
+## Execution Requirement
+
+User must be able to:
+
+* Download
+* Run immediately
+* Use without setup complexity
+
+---
+
+# 151. REPRODUCIBLE BUILDS
+
+All builds must be reproducible.
+
+Requirements:
+
+* Same source → same binary output
+* No environment-dependent behavior
+* No hidden randomness
+* Deterministic compilation where possible
+
+---
+
+# 152. DISTRIBUTION SYSTEM
+
+## Primary Distribution Channel
+
+GitHub Releases only.
+
+---
+
+## Distribution Requirements
+
+All releases must include:
+
+* Versioned binaries
+* Checksums (SHA-256 or SHA-512)
+* Release notes
+* Signed artifacts (where applicable)
+
+---
+
+## Forbidden Distribution Channels
+
+* Unverified third-party sites
+* Paid app stores (unless explicitly later approved)
+* Uncontrolled mirrors
+
+---
+
+# 153. UPDATE SYSTEM ARCHITECTURE
+
+Keptr must implement a secure update mechanism.
+
+---
+
+## Update Sources
+
+* GitHub Releases API (primary)
+* Verified release artifacts only
+
+---
+
+## Update Process
+
+1. Check version metadata
+2. Fetch release manifest
+3. Validate signature
+4. Validate hash integrity
+5. Download update
+6. Verify again locally
+7. Apply update
+8. Validate post-install integrity
+
+---
+
+## Rollback Capability
+
+If update fails:
+
+* System must revert to previous stable version
+* No data loss permitted
+
+---
+
+# 154. UPDATE SECURITY MODEL
+
+All updates must be:
+
+* Cryptographically verified
+* Integrity checked
+* Source validated
+* Tamper-resistant
+
+---
+
+## Forbidden Update Behavior
+
+* Silent updates without user awareness
+* Forced updates without consent
+* Unverified binary execution
+* Background installation without validation
+
+---
+
+# 155. VERSIONING SYSTEM
+
+Keptr must use strict version control.
+
+---
+
+## Version Format
+
+Semantic versioning style:
+
+vMAJOR.MINOR.PATCH
+
+Example:
+
+v0.0.1
+
+---
+
+## Version Rules
+
+### MAJOR
+
+* Breaking architectural changes
+* Security model changes
+
+---
+
+### MINOR
+
+* New features
+* Non-breaking improvements
+
+---
+
+### PATCH
+
+* Bug fixes
+* Security patches
+* Minor adjustments
+
+---
+
+## Version Synchronization Requirement
+
+Version must be updated across:
+
+* Application runtime
+* Build metadata
+* Release notes
+* context.md
+* Internal configuration files
+
+---
+
+# 156. CONTEXT.MD SYSTEM
+
+## Purpose
+
+context.md acts as the persistent memory of Keptr’s development.
+
+---
+
+## Required Content
+
+Must always include:
+
+* Current version
+* Completed features
+* In-progress work
+* Pending tasks
+* Known bugs
+* Security decisions
+* Architecture decisions
+* Sync status
+* Cloud status
+* Vault system status
+* Browser extension status
+* Build status
+
+---
+
+## Update Rules
+
+context.md must be updated whenever:
+
+* A feature is completed
+* A bug is fixed
+* A system is modified
+* A version changes
+* Security changes occur
+
+---
+
+## Prohibited Behavior
+
+* Leaving outdated state
+* Stale documentation
+* Incomplete tracking
+* Ignoring context updates
+
+---
+
+# 157. PROMPT.TXT GOVERNANCE
+
+## Purpose
+
+prompt.txt defines the living rules of Keptr development.
+
+---
+
+## Requirements
+
+* Must always remain present
+* Must always be read before development actions
+* Must never be deleted
+* Must remain synchronized with system goals
+
+---
+
+# 158. REPOSITORY STRUCTURE GOVERNANCE
+
+The repository must remain:
+
+* Clean
+* Modular
+* Auditable
+* Predictable
+* Secure
+
+---
+
+## Prohibited Structure Issues
+
+* Empty folders
+* Dead files
+* Temporary scripts
+* Debug leftovers
+* Duplicate modules
+* Mixed responsibilities in single files
+
+---
+
+## Separation Requirements
+
+Strict separation of:
+
+* Cryptography layer
+* UI layer
+* Sync layer
+* Storage layer
+* Extension layer
+* Security layer
+* Cloud layer
+
+---
+
+# 159. CODE QUALITY REQUIREMENTS
+
+All code must follow:
+
+* Clean architecture principles
+* Secure coding practices
+* Modular design
+* Strong typing where applicable
+* Proper error handling
+* No unused code paths
+
+---
+
+## Forbidden Code Practices
+
+* Placeholder functions
+* TODO-based critical logic
+* Hardcoded secrets
+* Mock production logic
+* Debug-only code in production
+
+---
+
+# 160. TESTING STRATEGY
+
+Keptr must include structured testing.
+
+---
+
+## Required Testing Types
+
+* Unit tests
+* Integration tests
+* Security tests
+* Encryption validation tests
+* Sync tests
+* Cloud validation tests
+* UI consistency tests
+
+---
+
+## Security Testing Requirement
+
+Security features must be explicitly tested for:
+
+* Exploitation resistance
+* Memory safety
+* Data leakage prevention
+
+---
+
+# 161. LOGGING SYSTEM
+
+Logging must be:
+
+* Secure
+* Minimal
+* Non-sensitive
+* Structured
+
+---
+
+## Prohibited Logging Content
+
+* Passwords
+* Encryption keys
+* Vault contents
+* Personal data
+* Sensitive metadata
+
+---
+
+## Logging Goals
+
+* Debugging support
+* System diagnostics
+* Error tracing without leakage
+
+---
+
+# 162. ERROR HANDLING SYSTEM
+
+Errors must be:
+
+* Safe
+* Informative
+* Non-revealing of sensitive internals
+
+---
+
+## Error Principles
+
+* Never expose internal system structure
+* Never leak cryptographic data
+* Never reveal memory state
+
+---
+
+# 163. PERFORMANCE VALIDATION
+
+Before release, systems must be validated for:
+
+* Startup performance
+* Sync performance
+* Encryption performance
+* UI responsiveness
+* Memory usage stability
+
+---
+
+# 164. RELEASE READINESS CHECKLIST
+
+No release is valid unless:
+
+* All features complete
+* Security validated
+* Sync tested
+* Cloud tested
+* Extension tested
+* UI reviewed
+* Version updated
+* context.md updated
+* No debug code exists
+* No placeholders exist
+* No incomplete modules exist
+
+---
+
+# 165. PRODUCTION HARDENING REQUIREMENTS
+
+Before production release:
+
+* Code must be audited
+* Security model validated
+* Attack surface minimized
+* Dependencies reviewed
+* Build reproducibility verified
+
+---
+
+# 166. FINAL QUALITY GATE
+
+A build is considered production-ready only if:
+
+* It passes all tests
+* It meets security standards
+* It meets performance standards
+* It meets UX standards
+* It meets architecture standards
+
+---
+
+END OF PART 7
+
+# KEPTR MASTER PROMPT
+
+## PART 8 — FINAL CONSOLIDATION, GLOBAL INVARIANTS, SYSTEM INTEGRATION RULES, AI OPERATING PROTOCOL & COMPLETION CONSTITUTION
+
+---
+
+# 167. FINAL SYSTEM DEFINITION
+
+Keptr is a production-grade, security-critical, zero-knowledge digital vault platform designed to store, protect, synchronize, and manage highly sensitive user data across devices using a fully encrypted local + cloud hybrid architecture.
+
+It consists of:
+
+* Windows desktop application (primary)
+* Browser extension (companion system)
+* Cloud synchronization backend (zero-knowledge design)
+* Encrypted local vault system
+* Secure file formats (.kore, .kaps, .kept)
+* Cryptographic core engine
+* Identity, authentication, and recovery system
+
+Keptr is a single unified security ecosystem.
+
+---
+
+# 168. GLOBAL SYSTEM INTEGRATION RULES
+
+All subsystems must operate under unified principles.
+
+---
+
+## Rule 1 — No Security Boundary Weakening
+
+No subsystem may reduce the security guarantees of any other subsystem.
+
+---
+
+## Rule 2 — Encryption Consistency
+
+All data storage, sync, backup, and sharing must follow identical encryption guarantees.
+
+---
+
+## Rule 3 — Zero-Knowledge Enforcement
+
+At no point may any system possess enough information to decrypt user vault data without user authorization.
+
+---
+
+## Rule 4 — Cross-System Compatibility
+
+* Desktop
+* Extension
+* Cloud
+* Mobile (future)
+
+must remain compatible without architectural divergence.
+
+---
+
+## Rule 5 — No Hidden State
+
+No subsystem may maintain hidden or undocumented state affecting security behavior.
+
+---
+
+# 169. GLOBAL SECURITY INVARIANTS
+
+These rules can NEVER be violated.
+
+---
+
+## Invariant 1 — No Plaintext Leakage
+
+User secrets must never exist in:
+
+* Cloud storage
+* Logs
+* Crash dumps
+* Browser extension storage
+* Network traffic
+
+---
+
+## Invariant 2 — No Key Exposure
+
+Encryption keys must never:
+
+* Leave the device unencrypted
+* Be transmitted externally
+* Be stored in insecure form
+
+---
+
+## Invariant 3 — No Silent Data Loss
+
+No operation may silently discard user data.
+
+---
+
+## Invariant 4 — No Undocumented Behavior
+
+All system behavior must be documented and predictable.
+
+---
+
+## Invariant 5 — No Security Bypass Paths
+
+There must be no hidden or alternative paths that bypass authentication or encryption.
+
+---
+
+# 170. SYSTEM-WIDE CONSISTENCY RULES
+
+All components must maintain:
+
+* Consistent cryptographic standards
+* Consistent UX language
+* Consistent error handling
+* Consistent versioning
+* Consistent logging policy
+* Consistent security model
+
+---
+
+# 171. FAILURE MODEL DESIGN
+
+Keptr must assume failures will occur.
+
+---
+
+## Allowed Failure Modes
+
+* Network interruption
+* Device loss
+* Corrupted local storage
+* Partial sync failure
+* Application crash
+
+---
+
+## Required Behavior During Failure
+
+System must:
+
+* Preserve encrypted data
+* Avoid data corruption
+* Maintain recovery paths
+* Prevent silent loss
+
+---
+
+# 172. RECOVERY-FIRST ARCHITECTURE
+
+Every system must support recovery scenarios.
+
+---
+
+## Recovery Guarantees
+
+* Vault data must be restorable
+* Cloud sync must be recoverable
+* Device loss must not result in data loss
+* Backup must remain valid under all conditions
+
+---
+
+# 173. AI DEVELOPMENT AGENT FINAL OPERATING PROTOCOL
+
+When acting as the builder of Keptr:
+
+---
+
+## Role Definition
+
+You operate as:
+
+* Lead Security Architect
+* Principal Software Engineer
+* Cryptography Engineer
+* Systems Architect
+* UX Architect
+* QA Engineer
+* DevOps Engineer
+* Security Auditor
+
+simultaneously.
+
+---
+
+## Mandatory Behavior Rules
+
+You must:
+
+* Prioritize correctness over speed
+* Prioritize security over convenience
+* Prioritize maintainability over shortcuts
+* Validate assumptions before implementation
+* Refuse insecure implementations
+* Refuse incomplete designs
+* Refuse placeholder logic
+
+---
+
+## Development Discipline Rules
+
+You must:
+
+* Implement features incrementally
+* Fully complete each feature before proceeding
+* Maintain context consistency
+* Update versioning consistently
+* Maintain context.md accurately
+* Ensure no incomplete modules remain
+
+---
+
+## Forbidden Behaviors
+
+You must NEVER:
+
+* Introduce fake implementations
+* Skip security analysis
+* Ignore cryptographic correctness
+* Leave TODOs in production logic
+* Create incomplete modules
+* Violate zero-knowledge constraints
+
+---
+
+# 174. SYSTEM COMPLETION STANDARD
+
+Keptr is considered complete only when:
+
+* All cryptographic systems are implemented and verified
+* All vault systems are functional and secure
+* All file formats are implemented (.kore, .kaps, .kept)
+* Cloud sync is fully operational and zero-knowledge verified
+* Multi-device system is functional
+* Browser extension is fully integrated
+* Autofill system is secure and tested
+* Security features are implemented and validated
+* UI/UX system is consistent across platforms
+* Update system is secure and rollback capable
+* Build system is reproducible
+* Repository is clean and auditable
+* No placeholders exist anywhere in codebase
+* No debug logic exists in production
+* No incomplete features exist
+* Documentation is complete and accurate
+* context.md is fully up to date
+* Versioning is consistent across all components
+
+---
+
+# 175. FINAL SECURITY GUARANTEE
+
+If any requirement in this specification conflicts with convenience, speed, simplicity, or implementation ease:
+
+👉 SECURITY ALWAYS WINS
+
+---
+
+# 176. FINAL ARCHITECTURAL TRUTH
+
+Keptr is not:
+
+* A prototype
+* A demo
+* A side project
+* A minimal product
+
+Keptr is:
+
+* A real-world security platform
+* A production-grade vault system
+* A zero-knowledge cryptographic ecosystem
+* A long-term software product
+
+---
+
+# 177. ABSOLUTE NON-NEGOTIABLE RULE
+
+No part of Keptr may ever:
+
+* Compromise user security
+* Leak user data
+* Break encryption guarantees
+* Introduce hidden vulnerabilities
+* Deviate from zero-knowledge principles
+
+---
+
+# 178. FINAL DECLARATION
+
+This document is the complete governing constitution of Keptr.
+
+All previous parts (1–7) and this final part (8) together form the **authoritative system specification**.
+
+All implementation must strictly conform to this architecture without exception.
+
+No assumptions are permitted beyond what is explicitly defined.
+
+No shortcuts are permitted.
+
+No unsafe optimizations are permitted.
+
+No security relaxations are permitted.
+
+---
+
+# END OF KEPTR MASTER PROMPT
+
+## FULL SPECIFICATION COMPLETE
+
+# KEPTR MASTER PROMPT
+
+## ENGINEERING ADDENDUM — IMPLEMENTATION-GRADE SYSTEM SPECIFICATION
+
+---
+
+# A1. CLOUD BACKEND ARCHITECTURE (ZERO-KNOWLEDGE SYSTEM DESIGN)
+
+## A1.1 Core Principle
+
+The cloud backend is a **dumb encrypted storage and sync relay system**.
+
+It must NEVER:
+
+* decrypt data
+* derive keys
+* interpret vault structure
+* access plaintext
+
+---
+
+## A1.2 System Architecture
+
+The cloud system is composed of:
+
+### 1. API Gateway Layer
+
+* Handles authentication requests
+* Routes encrypted payloads
+* Rate limiting + abuse prevention
+
+---
+
+### 2. Sync Service Layer
+
+* Receives encrypted vault updates
+* Stores versioned encrypted blobs
+* Handles conflict metadata only
+
+---
+
+### 3. Object Storage Layer
+
+* Stores:
+
+  * `.kore` encrypted vault objects
+  * `.kaps` encrypted file chunks
+  * `.kept` backups
+
+* Acts like a **secure object store (S3-like behavior)**
+
+---
+
+### 4. Metadata Index (Non-sensitive only)
+
+Stores ONLY:
+
+* user ID (hashed)
+* device IDs (public identifiers)
+* sync timestamps
+* version vectors
+* encrypted blob pointers
+
+---
+
+## A1.3 Sync Protocol Model
+
+### Event-Based Sync System
+
+All changes are represented as:
+
+* immutable encrypted events
+
+Each event contains:
+
+* event_id
+* device_id
+* timestamp
+* encrypted_payload
+* hash chain pointer
+
+---
+
+## A1.4 Conflict Model
+
+Hybrid model:
+
+* Vector clock tracking
+* Last-write-wins only as fallback
+* Merge hints stored encrypted client-side
+
+---
+
+## A1.5 Cloud Security Guarantee
+
+* No plaintext exists at rest or transit
+* TLS + additional client encryption required
+* Server is always untrusted
+
+---
+
+# A2. CRYPTOGRAPHIC KEY MANAGEMENT (ENGINEERING LEVEL)
+
+---
+
+## A2.1 Key Hierarchy (Strict Model)
+
+```
+Master Password
+   ↓ (Argon2id KDF)
+Master Key (MK)
+   ↓
+Vault Key (VK)
+   ↓
+Item Keys (IK)
+   ↓
+Data Encryption Keys (DEK per item)
+```
+
+---
+
+## A2.2 Device Binding Key
+
+Each device generates:
+
+* Ed25519 device identity keypair
+* Device Public Key registered to account
+
+Used for:
+
+* sync authentication
+* secure session negotiation
+
+---
+
+## A2.3 Key Storage Rules
+
+* Keys NEVER stored in plaintext disk
+* Keys only exist in:
+
+  * locked memory
+  * secure enclave (if available)
+  * ephemeral runtime session
+
+---
+
+## A2.4 Key Rotation System
+
+Triggers:
+
+* periodic rotation
+* manual rotation
+* compromise detection
+
+Process:
+
+1. generate new VK
+2. re-encrypt all IKs
+3. update cloud encrypted state
+4. invalidate old session keys
+
+---
+
+## A2.5 Secure Sharing Key Model
+
+* Ephemeral session key derived per share
+* Forward secrecy enforced
+* Share keys auto-expire
+
+---
+
+# A3. FILE FORMAT BYTE-LEVEL SPECIFICATION
+
+---
+
+## A3.1 .kore FORMAT (Vault Item Container)
+
+### Header Structure
+
+```
+[MAGIC 4B] "KORE"
+[VERSION 2B]
+[FLAGS 2B]
+[ITEM_TYPE 1B]
+[ALGO_ID 1B]
+[SALT 16B]
+[NONCE 24B]
+[ENCRYPTED_PAYLOAD VAR]
+[HMAC 32B]
+```
+
+---
+
+## A3.2 Encryption Model
+
+* XChaCha20-Poly1305 (preferred)
+* AES-256-GCM fallback
+
+---
+
+## A3.3 Integrity
+
+* HMAC-SHA-512 over full header + payload
+* tamper detection mandatory
+
+---
+
+## A3.4 .kaps FORMAT (Encrypted File Chunks)
+
+### Structure
+
+```
+[HEADER]
+  MAGIC: "KAPS"
+  VERSION
+  FILE_ID
+  CHUNK_COUNT
+  ORIGINAL_TYPE
+  FILENAME_HASH
+
+[CHUNKS]
+  chunk_1 encrypted
+  chunk_2 encrypted
+  ...
+
+[INDEX TABLE]
+  chunk hashes
+  offsets
+```
+
+---
+
+## A3.5 Streaming Encryption Rules
+
+* chunk size: 1MB–4MB
+* each chunk independently encrypted
+* supports partial download/decryption
+
+---
+
+## A3.6 .kept FORMAT (Backup Container)
+
+```
+[HEADER]
+  MAGIC: "KEPT"
+  VERSION
+  VAULT_ID
+  DEVICE_COUNT
+
+[ENCRYPTED_BUNDLE]
+  .kore blobs
+  .kaps blobs
+  metadata snapshot
+
+[INTEGRITY LAYER]
+  SHA-512 tree hash root
+```
+
+---
+
+# A4. UPDATE TRUST & SIGNING SYSTEM
+
+---
+
+## A4.1 Root of Trust Model
+
+Keptr uses:
+
+* Embedded root public key inside binary
+* All updates signed using private release key
+
+---
+
+## A4.2 Signing Flow
+
+1. Build binary
+2. Generate SHA-512 hash
+3. Sign hash using Ed25519 release key
+4. Attach signature to release manifest
+
+---
+
+## A4.3 Verification Flow
+
+On install/update:
+
+* verify signature against embedded root key
+* verify hash matches binary
+* reject if mismatch
+
+---
+
+## A4.4 Key Rotation Policy
+
+* release keys rotated per major version cycle
+* old keys kept for backward verification only
+
+---
+
+# A5. THREAT MODEL (SECURITY ENGINEERING VIEW)
+
+---
+
+## A5.1 Threat Actors
+
+* external hackers
+* malware on device
+* malicious extensions
+* compromised OS
+* network interception
+* insider attack (cloud side)
+
+---
+
+## A5.2 Attack Surfaces
+
+* local memory
+* disk storage
+* cloud sync channel
+* browser extension bridge
+* update mechanism
+* clipboard system
+
+---
+
+## A5.3 Security Assumptions
+
+* OS may be partially compromised
+* network is fully untrusted
+* cloud is fully untrusted
+* browser environment is hostile
+
+---
+
+## A5.4 Security Boundaries
+
+* encryption boundary = client device only
+* trust boundary = locked memory only
+
+---
+
+## A5.5 Core Defense Strategy
+
+* zero knowledge
+* least privilege
+* encrypted everywhere
+* ephemeral secrets only
+
+---
+
+# A6. PERFORMANCE ENGINEERING RULES
+
+---
+
+## A6.1 Latency Targets
+
+* vault unlock: < 200ms
+* item fetch: < 50ms
+* sync delta: < 500ms typical
+
+---
+
+## A6.2 Memory Limits
+
+* encrypted vault: in-place streaming where possible
+* no full vault load unless required
+
+---
+
+## A6.3 CPU Constraints
+
+* crypto operations must use hardware acceleration where available
+* avoid redundant re-encryption cycles
+
+---
+
+## A6.4 Startup Performance
+
+* cold start target: < 1.5s desktop app ready state
+
+---
+
+## A6.5 Sync Performance
+
+* incremental sync only
+* no full vault re-upload unless required
+
+---
+
+# A7. LEGAL & LICENSE MODEL
+
+---
+
+## A7.1 License Type
+
+* Source-available restrictive license
+* All rights reserved by default
+
+---
+
+## A7.2 Restrictions
+
+Users may NOT:
+
+* redistribute modified versions
+* remove branding
+* reverse engineer security model
+* resell software
+* bypass encryption system
+
+---
+
+## A7.3 Allowed Usage
+
+* personal use
+* organizational deployment (with permission)
+* device-limited usage per license terms
+
+---
+
+## A7.4 Security Clause
+
+Any attempt to bypass:
+
+* encryption
+* authentication
+* licensing
+
+is explicitly prohibited.
+
+---
+
+# A8. FINAL ENGINEERING CONSISTENCY RULE
+
+If any implementation conflicts with:
+
+* security model
+* zero-knowledge design
+* encryption guarantees
+* file format specification
+
+👉 SECURITY MODEL OVERRIDES EVERYTHING
+
+---
+
+# END OF ENGINEERING ADDENDUM
+
+# TECHNOLOGY SELECTION PRINCIPLE (STACK-AGNOSTIC RULE)
+
+The Keptr system must be implemented using a free, modern, secure, optimized, professional, maintainable, production-grade, and industry-standard technology stack.
+
+However, the exact programming languages, frameworks, libraries, and tools are NOT predefined in this specification.
+
+The responsibility of selecting the most appropriate stack is delegated to the implementation process.
+
+All technology choices must prioritize:
+
+- Security and cryptographic safety
+- Performance and memory efficiency
+- Maintainability and long-term stability
+- Cross-platform compatibility
+- Zero-cost tooling (no paid dependencies or services)
+
+# STACK SELECTION RULES
+
+Only technologies that are:
+
+- Widely adopted in production environments
+- Actively maintained and secure
+- Open-source or freely available
+- Well-audited and trusted by industry standards
+
+may be used.
+
+The system must avoid:
+
+- Experimental or unstable frameworks
+- Deprecated or unmaintained libraries
+- Proprietary or paid SDKs, services, or infrastructure
+- Vendor lock-in dependencies
+
+# ARCHITECTURAL FREEDOM REQUIREMENT
+
+The system architecture must remain stack-agnostic at the specification level.
+
+This means:
+
+- Architecture must be defined independently of implementation technology
+- Components must be described in a way that allows implementation in multiple modern stacks
+- Final technology decisions are deferred until implementation, based on best-fit evaluation
+
+# SELECTION PRIORITY ORDER
+
+When selecting technologies, the following order of priority must always be followed:
+
+1. Security and cryptographic correctness
+2. Performance and memory efficiency
+3. Cross-platform compatibility
+4. Long-term maintainability
+5. Ecosystem maturity and community trust
+6. Auditability and transparency
+7. Simplicity and minimal attack surface
+
+# RESTRICTIONS
+
+The system must NOT:
+
+- Be locked into any fixed programming language or framework at the specification level
+- Assume any specific technology prematurely
+- Introduce unnecessary complexity through overengineering
+- Depend on paid services, proprietary SDKs, or closed infrastructure
+
+# FINAL IMPLEMENTATION RULE
+
+The final technology stack must always be selected as:
+
+"The best available free, secure, modern, secure, optimized, professional, maintainable, production-grade, and industry-standard solution at the time of implementation"
+
+---
+
+# CRITICAL SPECIFICATION GAP WARNING (IMPORTANT)
+
+The current Keptr specification is highly detailed but still lacks some **implementation-level engineering definitions** required for full production-grade development.
+
+These are NOT optional for real-world implementation:
+
+## 1. Full System Module Architecture
+- Exact internal module boundaries (crypto engine, sync engine, UI engine, etc.)
+- Clear API contracts between modules
+- Dependency graph between components
+
+## 2. Cloud Infrastructure Deep Design
+- Deployment topology (single-region vs multi-region)
+- Scalability model (horizontal scaling rules)
+- Authentication/session lifecycle design
+- Storage backend architecture at infrastructure level
+
+## 3. Sync Engine Deep Logic
+- Conflict resolution algorithm (CRDT or equivalent formal model)
+- Version vector / causality tracking system
+- Delta sync encoding format
+- Partial failure recovery model
+
+## 4. File Format Binary Finalization
+- Full byte-level serialization rules enforcement
+- Encoding/decoding strict schema validation rules
+- Corruption recovery strategy
+
+## 5. Device Trust & Session Security Model
+- Device identity lifecycle
+- Session key rotation rules
+- Multi-device authorization and revocation flow
+
+## 6. UX Flow Specifications
+- First-time onboarding flow
+- Vault creation and recovery flows
+- Device pairing UX
+- Emergency access UX flow
+
+## 7. Logging, Audit, and Error Handling System
+- Secure logging rules (no sensitive leakage)
+- Audit trail structure (encrypted vs plaintext separation)
+- Error classification system
+- Crash handling security rules
+
+## 8. Build, Packaging, and CI/CD Pipeline
+- Full build pipeline definition
+- Reproducible build requirements
+- Signing automation pipeline
+- Release workflow structure
+
+---

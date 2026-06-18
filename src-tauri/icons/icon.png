@@ -1,0 +1,7 @@
+import path from "path";
+import fs from "fs";
+
+export default function createIcon() {
+  // Mock plugin to satisfy any icon requirements during GitHub build
+  // Tauri action will use default icons if we don't specify them in tauri.conf.json
+}

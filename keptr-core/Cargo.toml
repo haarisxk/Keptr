@@ -1,0 +1,11 @@
+[package]
+name = "keptr-core"
+version = "0.0.1"
+edition = "2021"
+description = "Keptr Vault Logic & Data Models"
+
+[dependencies]
+keptr-crypto = { path = "../keptr-crypto" }
+serde = { version = "1.0", features = ["derive"] }
+rmp-serde = "1.1" # MessagePack for secure serialization
+uuid = { version = "1.4", features = ["v4", "fast-rng"] }

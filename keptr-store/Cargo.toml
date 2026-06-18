@@ -1,0 +1,9 @@
+[package]
+name = "keptr-store"
+version = "0.0.1"
+edition = "2021"
+description = "Keptr Secure Local Database Engine"
+
+[dependencies]
+keptr-core = { path = "../keptr-core" }
+rusqlite = { version = "0.30", features = ["sqlcipher", "bundled"] }
