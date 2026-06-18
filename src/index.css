@@ -2,34 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-surface-secondary text-gray-900 font-sans antialiased;
-    /* Dark mode support */
-    @media (prefers-color-scheme: dark) {
-      @apply bg-dark-secondary text-gray-100;
-    }
-  }
-
-  /* No custom scrollbars or complex aesthetics per rule 141 */
-}
-
-@layer components {
-  .btn-primary {
-    @apply bg-brand text-white px-4 py-2 rounded-md transition-colors duration-fast hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2;
-  }
-  
-  .card {
-    @apply bg-surface rounded-lg shadow-sm p-4;
-    @media (prefers-color-scheme: dark) {
-      @apply bg-dark-surface shadow-none border border-dark-elevated;
-    }
-  }
-
-  .input-secure {
-    @apply w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand focus:border-brand transition-colors duration-fast;
-    @media (prefers-color-scheme: dark) {
-      @apply bg-dark-surface border-dark-elevated text-gray-100 focus:ring-brand;
-    }
-  }
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

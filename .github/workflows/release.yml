@@ -6,32 +6,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-windows:
+  build:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@stable
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Build Tauri application
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build frontend
+        run: npm run build
 
-      - name: Upload portable executable
+      - name: Build desktop application
+        run: npx tauri build
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Keptr-Windows
           path: |
             src-tauri/target/release/bundle/msi/*.msi
             src-tauri/target/release/keptr.exe
+          if-no-files-found: warn
