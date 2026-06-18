@@ -1,7 +1,5 @@
-use argon2::{
-    password_hash::{PasswordHasher, SaltString},
-    Argon2, Params,
-};
+use argon2::{Argon2, Params};
+use argon2::password_hash::SaltString;
 use rand::rngs::OsRng;
 use crate::memory::SecretBytes;
 
@@ -9,7 +7,7 @@ use crate::memory::SecretBytes;
 /// Returns the derived key and the salt used.
 pub fn derive_master_key(password: &SecretBytes, salt: Option<&str>) -> Result<(SecretBytes, String), String> {
     let salt = match salt {
-        Some(s) => SaltString::new(s).map_err(|e| e.to_string())?,
+        Some(s) => SaltString::from_b64(s).map_err(|e| e.to_string())?,
         None => SaltString::generate(&mut OsRng),
     };
 
@@ -23,7 +21,9 @@ pub fn derive_master_key(password: &SecretBytes, salt: Option<&str>) -> Result<(
     );
 
     let mut output_key = vec![0u8; 32];
-    argon2.hash_password_into(password.as_bytes(), salt.as_bytes(), &mut output_key).map_err(|e| e.to_string())?;
+    argon2
+        .hash_password_into(password.as_bytes(), salt.as_str().as_bytes(), &mut output_key)
+        .map_err(|e| e.to_string())?;
 
     Ok((SecretBytes::new(output_key), salt.as_str().to_string()))
 }
