@@ -1,5 +1,5 @@
 use crate::models::KoreHeader;
-use keptr_crypto::symmetric::{encrypt_data, decrypt_data};
+use keptr_crypto::symmetric::encrypt_data;
 use keptr_crypto::mac::{compute_hmac, verify_hmac};
 use keptr_crypto::memory::SecretBytes;
 
