@@ -13,4 +13,11 @@ impl SecretBytes {
     pub fn as_bytes(&self) -> &[u8] {
         &self.0
     }
+
+    pub fn generate_random(len: usize) -> Self {
+        use rand::RngCore;
+        let mut data = vec![0u8; len];
+        rand::rngs::OsRng.fill_bytes(&mut data);
+        Self(data)
+    }
 }

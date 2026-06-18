@@ -46,6 +46,34 @@ impl SecureStore {
         Ok(())
     }
 
+    /// Fetches all fully encrypted .kore items from the database.
+    pub fn get_all_items(&self) -> Result<Vec<(String, EncryptedKoreItem)>> {
+        let mut stmt = self.conn.prepare("SELECT id, kore_blob FROM vault_items")?;
+        let item_iter = stmt.query_map([], |row| {
+            let id: String = row.get(0)?;
+            let blob: Vec<u8> = row.get(1)?;
+            Ok((id, blob))
+        })?;
+
+        let mut items = Vec::new();
+        for item in item_iter {
+            let (id, blob) = item?;
+            if let Ok(kore_item) = EncryptedKoreItem::from_bytes(&blob) {
+                items.push((id, kore_item));
+            }
+        }
+        Ok(items)
+    }
+
+    /// Deletes an item from the vault by its ID.
+    pub fn delete_item(&self, item_id: &str) -> Result<()> {
+        self.conn.execute(
+            "DELETE FROM vault_items WHERE id = ?1",
+            [item_id],
+        )?;
+        Ok(())
+    }
+
     /// Set a metadata key-value pair.
     pub fn set_metadata(&self, key: &str, value: &str) -> Result<()> {
         self.conn.execute(

@@ -7,7 +7,10 @@ use keptr_crypto::memory::SecretBytes;
 use keptr_crypto::kdf::derive_master_key;
 use keptr_crypto::mac::{compute_hmac, verify_hmac};
 use keptr_store::db::SecureStore;
+use keptr_core::models::{ItemType, LoginItem};
+use keptr_core::vault::{create_kore_item, decrypt_kore_item};
 use std::sync::Mutex;
+use std::time::{SystemTime, UNIX_EPOCH};
 use tauri::State;
 
 struct AppState {
@@ -81,6 +84,80 @@ struct VaultStatus {
     is_unlocked: bool,
 }
 
+#[derive(serde::Deserialize)]
+struct AddLoginPayload {
+    name: String,
+    url: String,
+    username: String,
+    password_str: String,
+    notes: String,
+}
+
+#[derive(serde::Serialize)]
+struct LoginItemDto {
+    id: String,
+    name: String,
+    url: String,
+    username: String,
+    password_str: String,
+    notes: String,
+}
+
+#[tauri::command]
+fn add_item(payload: AddLoginPayload, state: State<'_, AppState>) -> Result<(), String> {
+    let vault_key = state.vault_key.lock().unwrap();
+    let master_key = vault_key.as_ref().ok_or("Vault is locked")?;
+
+    let login_item = LoginItem {
+        name: payload.name,
+        url: payload.url,
+        username: payload.username,
+        password: payload.password_str.into_bytes(),
+        totp: None,
+        notes: payload.notes,
+    };
+
+    let plaintext = serde_json::to_vec(&login_item).map_err(|e| e.to_string())?;
+
+    let encrypted_item = create_kore_item(ItemType::Login, master_key, &plaintext)?;
+
+    let item_id = format!("item_{}", SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis());
+    
+    let store = state.store.lock().unwrap();
+    store.save_kore_item(&item_id, ItemType::Login as u8, &encrypted_item).map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+fn get_items(state: State<'_, AppState>) -> Result<Vec<LoginItemDto>, String> {
+    let vault_key = state.vault_key.lock().unwrap();
+    let master_key = vault_key.as_ref().ok_or("Vault is locked")?;
+
+    let store = state.store.lock().unwrap();
+    let all_encrypted = store.get_all_items().map_err(|e| e.to_string())?;
+
+    let mut dtos = Vec::new();
+
+    for (id, encrypted_item) in all_encrypted {
+        if encrypted_item.header.item_type == ItemType::Login {
+            let plaintext_bytes = decrypt_kore_item(&encrypted_item, master_key)?;
+            if let Ok(login_item) = serde_json::from_slice::<LoginItem>(plaintext_bytes.as_bytes()) {
+                dtos.push(LoginItemDto {
+                    id,
+                    name: login_item.name,
+                    url: login_item.url,
+                    username: login_item.username,
+                    password_str: String::from_utf8(login_item.password).unwrap_or_default(),
+                    notes: login_item.notes,
+                });
+            }
+        }
+    }
+
+    Ok(dtos)
+}
+
 fn main() {
     let app_dir = std::env::current_dir().unwrap(); // For testing/dev
     let db_path = app_dir.join("vault.db");
@@ -98,7 +175,9 @@ fn main() {
             initialize_vault,
             unlock_vault,
             lock_vault,
-            check_vault_status
+            check_vault_status,
+            add_item,
+            get_items
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
