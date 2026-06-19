@@ -194,38 +194,194 @@ fn delete_item(id: String, state: State<'_, AppState>) -> Result<(), String> {
 }
 
 #[derive(serde::Deserialize)]
-struct PasswordOptions {
+enum PasswordType {
+    Chars,
+    Passphrase,
+    Pronounceable,
+}
+
+#[derive(serde::Deserialize)]
+struct AdvancedPasswordOptions {
+    pwd_type: PasswordType,
     length: usize,
     uppercase: bool,
     lowercase: bool,
     numbers: bool,
     symbols: bool,
+    exclude_ambiguous: bool,
+    word_count: usize,
+    separator: String,
 }
 
 #[tauri::command]
-fn generate_secure_password(options: PasswordOptions) -> Result<String, String> {
+fn generate_advanced_password(options: AdvancedPasswordOptions) -> Result<String, String> {
     use rand::Rng;
     let mut rng = rand::rngs::OsRng;
     
-    let mut charset = String::new();
-    if options.uppercase { charset.push_str("ABCDEFGHIJKLMNOPQRSTUVWXYZ"); }
-    if options.lowercase { charset.push_str("abcdefghijklmnopqrstuvwxyz"); }
-    if options.numbers { charset.push_str("0123456789"); }
-    if options.symbols { charset.push_str("!@#$%^&*()_+-=[]{}|;:,.<>?"); }
-    
-    if charset.is_empty() {
-        return Err("Must select at least one character set".to_string());
-    }
+    match options.pwd_type {
+        PasswordType::Chars => {
+            let mut charset = String::new();
+            
+            let mut upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let mut lower = "abcdefghijklmnopqrstuvwxyz";
+            let mut nums = "0123456789";
+            let mut syms = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+            
+            if options.exclude_ambiguous {
+                upper = "ABCDEFGHJKLMNPQRSTUVWXYZ"; // removed I, O
+                lower = "abcdefghijkmnopqrstuvwxyz"; // removed l
+                nums = "23456789"; // removed 1, 0
+            }
 
-    let chars: Vec<char> = charset.chars().collect();
-    let password: String = (0..options.length)
-        .map(|_| {
-            let idx = rng.gen_range(0..chars.len());
-            chars[idx]
-        })
-        .collect();
-        
-    Ok(password)
+            if options.uppercase { charset.push_str(upper); }
+            if options.lowercase { charset.push_str(lower); }
+            if options.numbers { charset.push_str(nums); }
+            if options.symbols { charset.push_str(syms); }
+            
+            if charset.is_empty() {
+                return Err("Must select at least one character set".to_string());
+            }
+
+            let chars: Vec<char> = charset.chars().collect();
+            let password: String = (0..options.length)
+                .map(|_| {
+                    let idx = rng.gen_range(0..chars.len());
+                    chars[idx]
+                })
+                .collect();
+                
+            Ok(password)
+        },
+        PasswordType::Passphrase => {
+            let wordlist = include_str!("eff_large_wordlist.txt");
+            let words: Vec<&str> = wordlist.lines()
+                .filter_map(|line| line.split_whitespace().nth(1))
+                .collect();
+                
+            if words.is_empty() {
+                return Err("Failed to load wordlist".to_string());
+            }
+            
+            let mut phrase_words = Vec::new();
+            for _ in 0..options.word_count {
+                let idx = rng.gen_range(0..words.len());
+                phrase_words.push(words[idx]);
+            }
+            
+            Ok(phrase_words.join(&options.separator))
+        },
+        PasswordType::Pronounceable => {
+            let consonants = vec!['b','c','d','f','g','h','j','k','l','m','n','p','r','s','t','v','w','y','z'];
+            let vowels = vec!['a','e','i','o','u'];
+            let mut pwd = String::new();
+            let mut is_consonant = rng.gen_bool(0.5);
+            
+            for _ in 0..options.length {
+                if is_consonant {
+                    let idx = rng.gen_range(0..consonants.len());
+                    pwd.push(consonants[idx]);
+                } else {
+                    let idx = rng.gen_range(0..vowels.len());
+                    pwd.push(vowels[idx]);
+                }
+                is_consonant = !is_consonant;
+            }
+            
+            Ok(pwd)
+        }
+    }
+}
+
+#[derive(serde::Deserialize)]
+enum UsernameType {
+    RandomChars,
+    Words,
+    EmailAlias,
+    CatchAll,
+}
+
+#[derive(serde::Deserialize)]
+struct UsernameOptions {
+    usr_type: UsernameType,
+    length: usize,
+    word_count: usize,
+    separator: String,
+    base_email: String,
+    alias_prefix: String,
+    domain: String,
+}
+
+#[tauri::command]
+fn generate_username(options: UsernameOptions) -> Result<String, String> {
+    use rand::Rng;
+    let mut rng = rand::rngs::OsRng;
+
+    match options.usr_type {
+        UsernameType::RandomChars => {
+            let charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+            let chars: Vec<char> = charset.chars().collect();
+            let mut username = String::new();
+            for _ in 0..options.length {
+                let idx = rng.gen_range(0..chars.len());
+                username.push(chars[idx]);
+            }
+            Ok(username)
+        },
+        UsernameType::Words => {
+            let wordlist = include_str!("eff_large_wordlist.txt");
+            let words: Vec<&str> = wordlist.lines()
+                .filter_map(|line| line.split_whitespace().nth(1))
+                .collect();
+            let mut phrase_words = Vec::new();
+            for _ in 0..options.word_count {
+                let idx = rng.gen_range(0..words.len());
+                phrase_words.push(words[idx]);
+            }
+            Ok(phrase_words.join(&options.separator))
+        },
+        UsernameType::EmailAlias => {
+            let parts: Vec<&str> = options.base_email.split('@').collect();
+            if parts.len() != 2 {
+                return Err("Invalid base email format. Must contain '@'".to_string());
+            }
+            let user = parts[0];
+            let domain = parts[1];
+            
+            let charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+            let chars: Vec<char> = charset.chars().collect();
+            let mut rnd = String::new();
+            for _ in 0..6 {
+                let idx = rng.gen_range(0..chars.len());
+                rnd.push(chars[idx]);
+            }
+            
+            let prefix = if options.alias_prefix.is_empty() { String::new() } else { format!("{}_", options.alias_prefix) };
+            
+            Ok(format!("{}+{}{}@{}", user, prefix, rnd, domain))
+        },
+        UsernameType::CatchAll => {
+            let wordlist = include_str!("eff_large_wordlist.txt");
+            let words: Vec<&str> = wordlist.lines()
+                .filter_map(|line| line.split_whitespace().nth(1))
+                .collect();
+            
+            let mut phrase_words = Vec::new();
+            for _ in 0..2 {
+                let idx = rng.gen_range(0..words.len());
+                phrase_words.push(words[idx]);
+            }
+            let prefix = phrase_words.join(&options.separator);
+            
+            let mut dom = options.domain;
+            if dom.starts_with('@') {
+                dom = dom[1..].to_string();
+            }
+            if dom.is_empty() {
+                return Err("Domain cannot be empty".to_string());
+            }
+            Ok(format!("{}@{}", prefix, dom))
+        }
+    }
 }
 
 fn main() {
@@ -250,7 +406,8 @@ fn main() {
             get_items,
             update_item,
             delete_item,
-            generate_secure_password
+            generate_advanced_password,
+            generate_username
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

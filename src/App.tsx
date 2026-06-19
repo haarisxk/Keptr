@@ -4,8 +4,9 @@ import {
   Key, Shield, Copy, Eye, EyeOff, Plus, Lock, 
   Search, Globe, ChevronRight, Check, AlertCircle,
   LayoutGrid, Settings, FileText, Fingerprint, Star,
-  Pencil, Trash2, RefreshCw
+  Pencil, Trash2, RefreshCw, Zap
 } from 'lucide-react';
+import GeneratorView from './GeneratorView';
 
 interface LoginItemDto {
   id: string;
@@ -109,6 +110,7 @@ export default function App() {
   // Vault state
   const [items, setItems] = useState<LoginItemDto[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentView, setCurrentView] = useState<'vault' | 'generator'>('vault');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -172,6 +174,7 @@ export default function App() {
       await invoke('lock_vault');
       setIsLocked(true);
       setItems([]);
+      setCurrentView('vault');
     } catch (e) {
       console.error(e);
     }
@@ -217,8 +220,18 @@ export default function App() {
 
   const handleGeneratePassword = async () => {
     try {
-      const pwd = await invoke<string>('generate_secure_password', {
-        options: { length: 16, uppercase: true, lowercase: true, numbers: true, symbols: true }
+      const pwd = await invoke<string>('generate_advanced_password', {
+        options: { 
+          pwd_type: 'Chars',
+          length: 16, 
+          uppercase: true, 
+          lowercase: true, 
+          numbers: true, 
+          symbols: true,
+          exclude_ambiguous: false,
+          word_count: 4,
+          separator: '-'
+        }
       });
       setNewItem(prev => ({ ...prev, password_str: pwd }));
     } catch (e) {
@@ -354,15 +367,19 @@ export default function App() {
         <div className="p-4 flex-1 overflow-y-auto hide-scrollbar">
           <nav className="space-y-1">
             <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-4">Vault</p>
-            <a href="#" className="flex items-center gap-3 px-3 py-2.5 bg-brand-500/10 text-brand-400 rounded-xl font-medium transition-colors">
+            <button 
+              onClick={() => setCurrentView('vault')}
+              className={`flex items-center gap-3 px-3 py-2.5 w-full text-left rounded-xl font-medium transition-colors ${currentView === 'vault' ? 'bg-brand-500/10 text-brand-400' : 'text-gray-400 hover:text-gray-200 hover:bg-dark-800'}`}
+            >
               <LayoutGrid className="w-5 h-5" /> All Items
-            </a>
-            <a href="#" className="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-gray-200 hover:bg-dark-800 rounded-xl font-medium transition-colors">
-              <Globe className="w-5 h-5" /> Logins
-            </a>
-            <a href="#" className="flex items-center gap-3 px-3 py-2.5 text-gray-400 hover:text-gray-200 hover:bg-dark-800 rounded-xl font-medium transition-colors">
-              <FileText className="w-5 h-5" /> Secure Notes
-            </a>
+            </button>
+            <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-8">Tools</p>
+            <button 
+              onClick={() => setCurrentView('generator')}
+              className={`flex items-center gap-3 px-3 py-2.5 w-full text-left rounded-xl font-medium transition-colors ${currentView === 'generator' ? 'bg-brand-500/10 text-brand-400' : 'text-gray-400 hover:text-gray-200 hover:bg-dark-800'}`}
+            >
+              <Zap className="w-5 h-5" /> Generator
+            </button>
           </nav>
         </div>
 
@@ -401,44 +418,48 @@ export default function App() {
           </button>
         </header>
 
-        {/* List Content */}
-        <div className="flex-1 overflow-y-auto p-8">
-          <div className="w-full">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">All Items</h2>
-              <span className="text-sm text-gray-500">{filteredItems.length} items securely stored</span>
-            </div>
+        {/* Dynamic Content */}
+        {currentView === 'vault' ? (
+          <div className="flex-1 overflow-y-auto p-8">
+            <div className="w-full">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-white">All Items</h2>
+                <span className="text-sm text-gray-500">{filteredItems.length} items securely stored</span>
+              </div>
 
-            {filteredItems.length === 0 ? (
-              <div className="glass-card rounded-2xl p-16 flex flex-col items-center justify-center text-center border-dashed border-dark-600">
-                <div className="w-16 h-16 rounded-2xl bg-dark-800 flex items-center justify-center mb-6">
-                  <Shield className="w-8 h-8 text-gray-500" />
+              {filteredItems.length === 0 ? (
+                <div className="glass-card rounded-2xl p-16 flex flex-col items-center justify-center text-center border-dashed border-dark-600">
+                  <div className="w-16 h-16 rounded-2xl bg-dark-800 flex items-center justify-center mb-6">
+                    <Shield className="w-8 h-8 text-gray-500" />
+                  </div>
+                  <h3 className="text-lg font-medium text-white mb-2">Nothing here yet</h3>
+                  <p className="text-gray-400 mb-6 max-w-sm">
+                    Add your first login, secure note, or identity to start building your encrypted vault.
+                  </p>
+                  <button 
+                    onClick={openAddModal}
+                    className="bg-dark-800 hover:bg-dark-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors border border-dark-600 flex items-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" /> Add Item
+                  </button>
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">Nothing here yet</h3>
-                <p className="text-gray-400 mb-6 max-w-sm">
-                  Add your first login, secure note, or identity to start building your encrypted vault.
-                </p>
-                <button 
-                  onClick={openAddModal}
-                  className="bg-dark-800 hover:bg-dark-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors border border-dark-600 flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" /> Add Item
-                </button>
-              </div>
-            ) : (
-              <div className="grid gap-3">
-                {filteredItems.map(item => (
-                  <PasswordItem 
-                    key={item.id} 
-                    item={item} 
-                    onEdit={() => openEditModal(item)}
-                    onDelete={() => setDeletingId(item.id)}
-                  />
-                ))}
-              </div>
-            )}
+              ) : (
+                <div className="grid gap-3">
+                  {filteredItems.map(item => (
+                    <PasswordItem 
+                      key={item.id} 
+                      item={item} 
+                      onEdit={() => openEditModal(item)}
+                      onDelete={() => setDeletingId(item.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <GeneratorView />
+        )}
       </main>
 
               {/* Add/Edit Modal */}
@@ -490,7 +511,7 @@ export default function App() {
                     type="button" 
                     onClick={handleGeneratePassword}
                     className="px-4 bg-dark-800 hover:bg-dark-700 text-brand-400 rounded-xl transition-colors border border-dark-600 flex items-center justify-center" 
-                    title="Generate Password"
+                    title="Generate Random Password"
                   >
                     <RefreshCw className="w-5 h-5" />
                   </button>
