@@ -158,6 +158,76 @@ fn get_items(state: State<'_, AppState>) -> Result<Vec<LoginItemDto>, String> {
     Ok(dtos)
 }
 
+#[tauri::command]
+fn update_item(id: String, payload: AddLoginPayload, state: State<'_, AppState>) -> Result<(), String> {
+    let vault_key = state.vault_key.lock().unwrap();
+    let master_key = vault_key.as_ref().ok_or("Vault is locked")?;
+
+    let login_item = LoginItem {
+        name: payload.name,
+        url: payload.url,
+        username: payload.username,
+        password: payload.password_str.into_bytes(),
+        totp: None,
+        notes: payload.notes,
+    };
+
+    let plaintext = serde_json::to_vec(&login_item).map_err(|e| e.to_string())?;
+
+    let encrypted_item = create_kore_item(ItemType::Login, master_key, &plaintext)?;
+    
+    let store = state.store.lock().unwrap();
+    store.save_kore_item(&id, ItemType::Login as u8, &encrypted_item).map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+fn delete_item(id: String, state: State<'_, AppState>) -> Result<(), String> {
+    let vault_key = state.vault_key.lock().unwrap();
+    let _ = vault_key.as_ref().ok_or("Vault is locked")?;
+
+    let store = state.store.lock().unwrap();
+    store.delete_item(&id).map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[derive(serde::Deserialize)]
+struct PasswordOptions {
+    length: usize,
+    uppercase: bool,
+    lowercase: bool,
+    numbers: bool,
+    symbols: bool,
+}
+
+#[tauri::command]
+fn generate_secure_password(options: PasswordOptions) -> Result<String, String> {
+    use rand::Rng;
+    let mut rng = rand::rngs::OsRng;
+    
+    let mut charset = String::new();
+    if options.uppercase { charset.push_str("ABCDEFGHIJKLMNOPQRSTUVWXYZ"); }
+    if options.lowercase { charset.push_str("abcdefghijklmnopqrstuvwxyz"); }
+    if options.numbers { charset.push_str("0123456789"); }
+    if options.symbols { charset.push_str("!@#$%^&*()_+-=[]{}|;:,.<>?"); }
+    
+    if charset.is_empty() {
+        return Err("Must select at least one character set".to_string());
+    }
+
+    let chars: Vec<char> = charset.chars().collect();
+    let password: String = (0..options.length)
+        .map(|_| {
+            let idx = rng.gen_range(0..chars.len());
+            chars[idx]
+        })
+        .collect();
+        
+    Ok(password)
+}
+
 fn main() {
     let app_dir = std::env::current_dir().unwrap(); // For testing/dev
     let db_path = app_dir.join("vault.db");
@@ -177,7 +247,10 @@ fn main() {
             lock_vault,
             check_vault_status,
             add_item,
-            get_items
+            get_items,
+            update_item,
+            delete_item,
+            generate_secure_password
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

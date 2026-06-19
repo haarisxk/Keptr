@@ -3,7 +3,8 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { 
   Key, Shield, Copy, Eye, EyeOff, Plus, Lock, 
   Search, Globe, ChevronRight, Check, AlertCircle,
-  LayoutGrid, Settings, FileText, Fingerprint, Star
+  LayoutGrid, Settings, FileText, Fingerprint, Star,
+  Pencil, Trash2, RefreshCw
 } from 'lucide-react';
 
 interface LoginItemDto {
@@ -38,7 +39,7 @@ const AbstractAuthBackground = () => (
   </div>
 );
 
-const PasswordItem = ({ item }: { item: LoginItemDto }) => {
+const PasswordItem = ({ item, onEdit, onDelete }: { item: LoginItemDto, onEdit: () => void, onDelete: () => void }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -88,8 +89,11 @@ const PasswordItem = ({ item }: { item: LoginItemDto }) => {
             <Star className={`w-4 h-4 ${isFavorite ? 'text-yellow-400 fill-yellow-400' : ''}`} />
           </button>
         </div>
-        <button className="text-gray-600 hover:text-white transition-colors">
-          <ChevronRight className="w-5 h-5" />
+        <button onClick={onEdit} className="p-2 text-gray-500 hover:text-white hover:bg-dark-700 rounded-lg transition-colors" title="Edit">
+          <Pencil className="w-4 h-4" />
+        </button>
+        <button onClick={onDelete} className="p-2 text-red-500/70 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete">
+          <Trash2 className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -105,7 +109,11 @@ export default function App() {
   // Vault state
   const [items, setItems] = useState<LoginItemDto[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAddingItem, setIsAddingItem] = useState(false);
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   const [newItem, setNewItem] = useState({
     name: '', url: '', username: '', password_str: '', notes: '',
   });
@@ -169,15 +177,52 @@ export default function App() {
     }
   };
 
-  const handleAddItem = async (e: React.FormEvent) => {
+  const openAddModal = () => {
+    setEditingId(null);
+    setNewItem({ name: '', url: '', username: '', password_str: '', notes: '' });
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (item: LoginItemDto) => {
+    setEditingId(item.id);
+    setNewItem({ ...item });
+    setIsModalOpen(true);
+  };
+
+  const handleSaveItem = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await invoke('add_item', { payload: newItem });
-      setIsAddingItem(false);
-      setNewItem({ name: '', url: '', username: '', password_str: '', notes: '' });
+      if (editingId) {
+        await invoke('update_item', { id: editingId, payload: newItem });
+      } else {
+        await invoke('add_item', { payload: newItem });
+      }
+      setIsModalOpen(false);
       loadItems();
     } catch (e) {
-      console.error('Failed to add item:', e);
+      console.error('Failed to save item:', e);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+    try {
+      await invoke('delete_item', { id: deletingId });
+      setDeletingId(null);
+      loadItems();
+    } catch (e) {
+      console.error('Failed to delete item:', e);
+    }
+  };
+
+  const handleGeneratePassword = async () => {
+    try {
+      const pwd = await invoke<string>('generate_secure_password', {
+        options: { length: 16, uppercase: true, lowercase: true, numbers: true, symbols: true }
+      });
+      setNewItem(prev => ({ ...prev, password_str: pwd }));
+    } catch (e) {
+      console.error('Failed to generate password:', e);
     }
   };
 
@@ -349,7 +394,7 @@ export default function App() {
             />
           </div>
           <button 
-            onClick={() => setIsAddingItem(true)}
+            onClick={openAddModal}
             className="bg-brand-500 hover:bg-brand-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all shadow-lg shadow-brand-500/20 flex items-center gap-2 flex-shrink-0"
           >
             <Plus className="w-4 h-4" /> New Item
@@ -374,7 +419,7 @@ export default function App() {
                   Add your first login, secure note, or identity to start building your encrypted vault.
                 </p>
                 <button 
-                  onClick={() => setIsAddingItem(true)}
+                  onClick={openAddModal}
                   className="bg-dark-800 hover:bg-dark-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-colors border border-dark-600 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" /> Add Item
@@ -383,7 +428,12 @@ export default function App() {
             ) : (
               <div className="grid gap-3">
                 {filteredItems.map(item => (
-                  <PasswordItem key={item.id} item={item} />
+                  <PasswordItem 
+                    key={item.id} 
+                    item={item} 
+                    onEdit={() => openEditModal(item)}
+                    onDelete={() => setDeletingId(item.id)}
+                  />
                 ))}
               </div>
             )}
@@ -391,18 +441,18 @@ export default function App() {
         </div>
       </main>
 
-      {/* Add Item Modal */}
-      {isAddingItem && (
+              {/* Add/Edit Modal */}
+      {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/80 backdrop-blur-sm animate-fade-in">
           <div className="glass-panel w-full max-w-md rounded-2xl overflow-hidden animate-fade-in-up">
             <div className="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
-              <h2 className="text-lg font-semibold text-white">Add New Login</h2>
-              <button onClick={() => setIsAddingItem(false)} className="text-gray-400 hover:text-white transition-colors">
+              <h2 className="text-lg font-semibold text-white">{editingId ? 'Edit Login' : 'Add New Login'}</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
                 ✕
               </button>
             </div>
             
-            <form onSubmit={handleAddItem} className="p-6 space-y-5">
+            <form onSubmit={handleSaveItem} className="p-6 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1.5">Name</label>
                 <input
@@ -427,20 +477,30 @@ export default function App() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
-                <input
-                  required
-                  type="password"
-                  value={newItem.password_str}
-                  onChange={(e) => setNewItem({ ...newItem, password_str: e.target.value })}
-                  className="input-field px-4"
-                  placeholder="••••••••"
-                />
+                <div className="flex gap-2">
+                  <input
+                    required
+                    type="password"
+                    value={newItem.password_str}
+                    onChange={(e) => setNewItem({ ...newItem, password_str: e.target.value })}
+                    className="input-field px-4"
+                    placeholder="••••••••"
+                  />
+                  <button 
+                    type="button" 
+                    onClick={handleGeneratePassword}
+                    className="px-4 bg-dark-800 hover:bg-dark-700 text-brand-400 rounded-xl transition-colors border border-dark-600 flex items-center justify-center" 
+                    title="Generate Password"
+                  >
+                    <RefreshCw className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
               
               <div className="pt-4 flex gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsAddingItem(false)}
+                  onClick={() => setIsModalOpen(false)}
                   className="flex-1 py-3 text-sm font-medium text-gray-300 hover:text-white bg-dark-800 hover:bg-dark-700 rounded-xl transition-colors border border-white/5"
                 >
                   Cancel
@@ -453,6 +513,35 @@ export default function App() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deletingId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark-950/80 backdrop-blur-sm animate-fade-in">
+          <div className="glass-panel w-full max-w-sm rounded-2xl overflow-hidden animate-fade-in-up p-6 text-center">
+            <div className="w-16 h-16 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+              <Trash2 className="w-8 h-8 text-red-400" />
+            </div>
+            <h2 className="text-xl font-semibold text-white mb-2">Delete Item?</h2>
+            <p className="text-gray-400 mb-8 text-sm">
+              Are you sure you want to permanently delete this item? This action cannot be undone.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeletingId(null)}
+                className="flex-1 py-3 text-sm font-medium text-gray-300 hover:text-white bg-dark-800 hover:bg-dark-700 rounded-xl transition-colors border border-white/5"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl text-sm font-medium transition-colors shadow-lg shadow-red-500/20"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
