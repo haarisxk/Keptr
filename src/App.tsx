@@ -3,7 +3,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { 
   Key, Shield, Copy, Eye, EyeOff, Plus, Lock, 
   Search, Globe, ChevronRight, Check, AlertCircle,
-  LayoutGrid, Settings, FileText, Fingerprint
+  LayoutGrid, Settings, FileText, Fingerprint, Star
 } from 'lucide-react';
 
 interface LoginItemDto {
@@ -41,6 +41,7 @@ const AbstractAuthBackground = () => (
 const PasswordItem = ({ item }: { item: LoginItemDto }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(item.password_str);
@@ -78,6 +79,13 @@ const PasswordItem = ({ item }: { item: LoginItemDto }) => {
             title="Copy password"
           >
             {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+          </button>
+          <button 
+            onClick={() => setIsFavorite(!isFavorite)}
+            className="p-2 text-gray-500 hover:text-white hover:bg-dark-700 rounded-lg transition-colors relative"
+            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Star className={`w-4 h-4 ${isFavorite ? 'text-yellow-400 fill-yellow-400' : ''}`} />
           </button>
         </div>
         <button className="text-gray-600 hover:text-white transition-colors">
@@ -208,7 +216,7 @@ export default function App() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-field pl-11"
+                    className="input-field pl-12 pr-4"
                     placeholder="Enter a strong password"
                     autoFocus
                   />
@@ -259,7 +267,7 @@ export default function App() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-field pl-11"
+                    className="input-field pl-12 pr-4"
                     placeholder="••••••••••••"
                     autoFocus
                   />
@@ -329,20 +337,20 @@ export default function App() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className="h-20 flex items-center justify-between px-8 bg-dark-900/50 backdrop-blur-md border-b border-dark-800 sticky top-0 z-10">
-          <div className="relative w-96">
-            <Search className="w-5 h-5 text-gray-500 absolute left-3.5 top-2.5" />
+        <header className="h-20 flex items-center justify-between px-8 bg-dark-900/50 backdrop-blur-md border-b border-dark-800 sticky top-0 z-10 gap-8">
+          <div className="relative flex-1">
+            <Search className="w-5 h-5 text-gray-500 absolute left-4 top-2.5" />
             <input 
               type="text" 
               placeholder="Search your vault..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-dark-800 border border-dark-700 rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all placeholder:text-gray-500"
+              className="w-full bg-dark-800 border border-dark-700 rounded-xl pl-12 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all placeholder:text-gray-500"
             />
           </div>
           <button 
             onClick={() => setIsAddingItem(true)}
-            className="bg-brand-500 hover:bg-brand-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all shadow-lg shadow-brand-500/20 flex items-center gap-2"
+            className="bg-brand-500 hover:bg-brand-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition-all shadow-lg shadow-brand-500/20 flex items-center gap-2 flex-shrink-0"
           >
             <Plus className="w-4 h-4" /> New Item
           </button>
@@ -350,7 +358,7 @@ export default function App() {
 
         {/* List Content */}
         <div className="flex-1 overflow-y-auto p-8">
-          <div className="max-w-4xl mx-auto">
+          <div className="w-full">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">All Items</h2>
               <span className="text-sm text-gray-500">{filteredItems.length} items securely stored</span>
@@ -402,7 +410,7 @@ export default function App() {
                   type="text"
                   value={newItem.name}
                   onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-                  className="input-field"
+                  className="input-field px-4"
                   placeholder="e.g. Google, GitHub"
                 />
               </div>
@@ -413,7 +421,7 @@ export default function App() {
                   type="text"
                   value={newItem.username}
                   onChange={(e) => setNewItem({ ...newItem, username: e.target.value })}
-                  className="input-field"
+                  className="input-field px-4"
                   placeholder="user@example.com"
                 />
               </div>
@@ -424,7 +432,7 @@ export default function App() {
                   type="password"
                   value={newItem.password_str}
                   onChange={(e) => setNewItem({ ...newItem, password_str: e.target.value })}
-                  className="input-field"
+                  className="input-field px-4"
                   placeholder="••••••••"
                 />
               </div>

@@ -32,6 +32,6 @@
     @apply shadow-[0_0_30px_-5px_rgba(99,102,241,0.4)];
   }
   .input-field {
-    @apply w-full bg-dark-950/50 border border-dark-600/50 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all placeholder:text-gray-600;
+    @apply w-full bg-dark-950/50 border border-dark-600/50 rounded-xl py-3 text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all placeholder:text-gray-600;
   }
 }
